@@ -1,0 +1,7 @@
+project_id = "rckbdhmwdhblcfquedsh"
+
+[functions.polymarket-trades]
+verify_jwt = false
+
+[functions.polymarket-traders]
+verify_jwt = false
