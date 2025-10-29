@@ -11,8 +11,7 @@ serve(async (req) => {
   }
 
   try {
-    const url = new URL(req.url);
-    const wallet = url.searchParams.get('wallet');
+    const { wallet } = await req.json();
     
     if (!wallet) {
       throw new Error('Wallet address is required');
@@ -56,7 +55,7 @@ serve(async (req) => {
       totalProfit += profitLoss;
 
       return {
-        id: `${trade.proxyWallet}-${trade.timestamp}`,
+        id: `${trade.proxyWallet}-${trade.timestamp}-${Math.random()}`,
         market: trade.title || 'Unknown Market',
         side: trade.outcome || (trade.side === 'BUY' ? 'YES' : 'NO'),
         amount: Math.round(tradeValue),
