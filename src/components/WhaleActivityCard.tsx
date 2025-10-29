@@ -1,7 +1,11 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Wallet, TrendingUp, TrendingDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Wallet, TrendingUp, TrendingDown, Copy } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { WalletTradeHistory } from "./WalletTradeHistory";
+import { toast } from "sonner";
 
 interface WhaleActivity {
   id: string;
@@ -20,21 +24,39 @@ interface WhaleActivityCardProps {
 
 export const WhaleActivityCard = ({ activity }: WhaleActivityCardProps) => {
   const isBuy = activity.side === "YES";
+  const [showHistory, setShowHistory] = useState(false);
   
+  const copyWallet = () => {
+    navigator.clipboard.writeText(activity.wallet);
+    toast.success("Wallet address copied!");
+  };
+
   return (
-    <Card className="p-4 hover:bg-muted/50 transition-colors">
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex-1 space-y-2">
-          {/* Wallet Info */}
-          <div className="flex items-center gap-2">
-            <Wallet className="h-4 w-4 text-warning" />
-            <span className="font-mono text-sm font-medium">
-              {activity.wallet.slice(0, 6)}...{activity.wallet.slice(-4)}
-            </span>
-            <Badge variant="outline" className="text-xs bg-warning/10 border-warning/30 text-warning">
-              {activity.profitability}% Win Rate
-            </Badge>
-          </div>
+    <>
+      <Card className="p-4 hover:bg-muted/50 transition-colors cursor-pointer" onClick={() => setShowHistory(true)}>
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex-1 space-y-2">
+            {/* Wallet Info */}
+            <div className="flex items-center gap-2">
+              <Wallet className="h-4 w-4 text-warning" />
+              <span className="font-mono text-sm font-medium">
+                {activity.wallet.slice(0, 6)}...{activity.wallet.slice(-4)}
+              </span>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-6 w-6"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  copyWallet();
+                }}
+              >
+                <Copy className="h-3 w-3" />
+              </Button>
+              <Badge variant="outline" className="text-xs bg-warning/10 border-warning/30 text-warning">
+                {activity.profitability.toFixed(0)}% Win Rate
+              </Badge>
+            </div>
 
           {/* Market */}
           <p className="text-sm text-muted-foreground line-clamp-2">
@@ -62,5 +84,12 @@ export const WhaleActivityCard = ({ activity }: WhaleActivityCardProps) => {
         </div>
       </div>
     </Card>
+    
+    <WalletTradeHistory 
+      wallet={activity.wallet}
+      open={showHistory}
+      onOpenChange={setShowHistory}
+    />
+    </>
   );
 };

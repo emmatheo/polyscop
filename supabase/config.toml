@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.polymarket-traders]
 verify_jwt = false
+
+[functions.polymarket-wallet-trades]
+verify_jwt = false
