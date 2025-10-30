@@ -11,10 +11,10 @@ serve(async (req) => {
   }
 
   try {
-    const url = new URL(req.url);
-    const minAmount = url.searchParams.get('minAmount') || '10000';
-    const limit = url.searchParams.get('limit') || '100';
-    const search = url.searchParams.get('search') || '';
+    const body = await req.json();
+    const minAmount = body.minAmount || 10000;
+    const limit = body.limit || 100;
+    const search = body.search || '';
 
     console.log(`Fetching trades with minAmount: ${minAmount}, limit: ${limit}, search: ${search}`);
 

@@ -11,9 +11,9 @@ serve(async (req) => {
   }
 
   try {
-    const url = new URL(req.url);
-    const limit = url.searchParams.get('limit') || '1000';
-    const search = url.searchParams.get('search') || '';
+    const body = await req.json();
+    const limit = body.limit || 1000;
+    const search = body.search || '';
 
     console.log(`Fetching traders with limit: ${limit}, search: ${search}`);
 
