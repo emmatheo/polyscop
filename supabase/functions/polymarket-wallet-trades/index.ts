@@ -19,8 +19,8 @@ serve(async (req) => {
 
     console.log(`Fetching trades for wallet: ${wallet}`);
 
-    // Fetch trades for specific wallet
-    const tradesUrl = `https://data-api.polymarket.com/trades?limit=100&takerOnly=true`;
+    // Fetch more trades to increase chance of finding wallet's trades
+    const tradesUrl = `https://data-api.polymarket.com/trades?limit=1000`;
     
     console.log(`Calling Polymarket API: ${tradesUrl}`);
     const response = await fetch(tradesUrl);
@@ -30,11 +30,13 @@ serve(async (req) => {
     }
 
     const allTrades = await response.json();
+    console.log(`Received ${allTrades.length} total trades from API`);
     
-    // Filter trades for this specific wallet
-    const walletTrades = allTrades.filter((trade: any) => 
-      trade.proxyWallet?.toLowerCase() === wallet.toLowerCase()
-    );
+    // Filter trades for this specific wallet (check both proxyWallet and taker)
+    const walletTrades = allTrades.filter((trade: any) => {
+      const tradeWallet = (trade.proxyWallet || trade.taker || '').toLowerCase();
+      return tradeWallet === wallet.toLowerCase();
+    });
     
     console.log(`Found ${walletTrades.length} trades for wallet ${wallet}`);
 
