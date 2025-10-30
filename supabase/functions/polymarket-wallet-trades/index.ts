@@ -19,25 +19,35 @@ serve(async (req) => {
 
     console.log(`Fetching trades for wallet: ${wallet}`);
 
-    // Fetch more trades to increase chance of finding wallet's trades
-    const tradesUrl = `https://data-api.polymarket.com/trades?limit=1000`;
+    // Use the Polymarket API endpoint for specific wallet trades
+    const tradesUrl = `https://data-api.polymarket.com/trades?maker=${wallet}&limit=500`;
+    const tradesUrl2 = `https://data-api.polymarket.com/trades?taker=${wallet}&limit=500`;
     
-    console.log(`Calling Polymarket API: ${tradesUrl}`);
-    const response = await fetch(tradesUrl);
+    console.log(`Calling Polymarket API for wallet trades`);
     
-    if (!response.ok) {
-      throw new Error(`Polymarket API error: ${response.status} ${response.statusText}`);
+    // Fetch both maker and taker trades
+    const [makerResponse, takerResponse] = await Promise.all([
+      fetch(tradesUrl),
+      fetch(tradesUrl2)
+    ]);
+    
+    if (!makerResponse.ok && !takerResponse.ok) {
+      throw new Error(`Polymarket API error: ${makerResponse.status}`);
     }
 
-    const allTrades = await response.json();
-    console.log(`Received ${allTrades.length} total trades from API`);
+    const makerTrades = makerResponse.ok ? await makerResponse.json() : [];
+    const takerTrades = takerResponse.ok ? await takerResponse.json() : [];
     
-    // Filter trades for this specific wallet (check both proxyWallet and taker)
-    const walletTrades = allTrades.filter((trade: any) => {
-      const tradeWallet = (trade.proxyWallet || trade.taker || '').toLowerCase();
-      return tradeWallet === wallet.toLowerCase();
+    // Combine and deduplicate trades
+    const allTradesMap = new Map();
+    [...makerTrades, ...takerTrades].forEach((trade: any) => {
+      const key = `${trade.id || trade.timestamp}-${trade.market}`;
+      if (!allTradesMap.has(key)) {
+        allTradesMap.set(key, trade);
+      }
     });
     
+    const walletTrades = Array.from(allTradesMap.values());
     console.log(`Found ${walletTrades.length} trades for wallet ${wallet}`);
 
     // Calculate wins and losses
