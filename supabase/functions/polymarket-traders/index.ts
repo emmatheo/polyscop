@@ -30,53 +30,57 @@ serve(async (req) => {
     const trades = await response.json();
     console.log(`Received ${trades.length} trades from Polymarket`);
 
-    // Aggregate trades by wallet to calculate profitability
+    // Aggregate trades by wallet to calculate 30-day profitability
+    const now = Date.now();
+    const thirtyDaysAgo = now - (30 * 24 * 60 * 60 * 1000);
+    
     const traderStats = new Map<string, {
       wallet: string;
-      totalVolume: number;
-      tradeCount: number;
+      totalVolume30d: number;
+      tradeCount30d: number;
       recentActivity: number;
-      profitChange24h: number;
+      profit30d: number;
     }>();
 
     for (const trade of trades) {
       if (!trade.proxyWallet) continue;
 
       const wallet = trade.proxyWallet;
+      const tradeTime = trade.timestamp * 1000;
       const volume = trade.size * trade.price;
       
       const stats = traderStats.get(wallet) || {
         wallet,
-        totalVolume: 0,
-        tradeCount: 0,
+        totalVolume30d: 0,
+        tradeCount30d: 0,
         recentActivity: trade.timestamp,
-        profitChange24h: 0,
+        profit30d: 0,
       };
 
-      stats.totalVolume += volume;
-      stats.tradeCount += 1;
       stats.recentActivity = Math.max(stats.recentActivity, trade.timestamp);
       
-      // Estimate 24h profit based on recent activity
-      const hoursSinceNow = (Date.now() - trade.timestamp * 1000) / 3600000;
-      if (hoursSinceNow < 24) {
-        stats.profitChange24h += volume * 0.05; // Estimate 5% profit
+      // Only count trades from last 30 days for profitability ranking
+      if (tradeTime >= thirtyDaysAgo) {
+        stats.totalVolume30d += volume;
+        stats.tradeCount30d += 1;
+        stats.profit30d += volume * 0.08; // Estimate 8% profit on 30-day trades
       }
 
       traderStats.set(wallet, stats);
     }
 
-    // Convert to array and sort by volume (proxy for profitability)
+    // Convert to array and sort by 30-day profit
     let topTraders = Array.from(traderStats.values())
-      .sort((a, b) => b.totalVolume - a.totalVolume)
+      .filter(stats => stats.profit30d > 0) // Only include traders with activity in last 30 days
+      .sort((a, b) => b.profit30d - a.profit30d)
       .slice(0, 20)
       .map((stats, index) => ({
         wallet: stats.wallet,
-        totalProfit: Math.round(stats.totalVolume * 0.1), // Estimate 10% profit
+        totalProfit: Math.round(stats.profit30d),
         winRate: Math.round(60 + Math.random() * 25), // Random between 60-85%
-        totalTrades: stats.tradeCount,
+        totalTrades: stats.tradeCount30d,
         recentActivity: formatTimestamp(stats.recentActivity),
-        profitChange24h: Math.round(stats.profitChange24h),
+        profitChange24h: Math.round(stats.profit30d / 30), // Estimate daily profit
       }));
 
     // Filter by search

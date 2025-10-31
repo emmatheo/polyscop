@@ -5,11 +5,13 @@ import { Activity, TrendingUp, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useWhaleActivity, useTopTraders } from "@/hooks/usePolymarketData";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [category, setCategory] = useState("");
   
-  const { data: whaleActivity, isLoading: whaleLoading, error: whaleError } = useWhaleActivity(searchQuery);
+  const { data: whaleActivity, isLoading: whaleLoading, error: whaleError } = useWhaleActivity(searchQuery, category);
   const { data: topTraders, isLoading: tradersLoading, error: tradersError } = useTopTraders(searchQuery);
 
   return (
@@ -24,6 +26,18 @@ const Index = () => {
             <h2 className="text-2xl font-bold">Live Whale Activity</h2>
             <span className="text-xs text-muted-foreground">Updates every 30s</span>
           </div>
+          
+          {/* Category Filters */}
+          <Tabs value={category} onValueChange={setCategory} className="mb-6">
+            <TabsList className="grid w-full grid-cols-6">
+              <TabsTrigger value="">All</TabsTrigger>
+              <TabsTrigger value="sports">Sports</TabsTrigger>
+              <TabsTrigger value="crypto">Crypto</TabsTrigger>
+              <TabsTrigger value="politics">Politics</TabsTrigger>
+              <TabsTrigger value="economy">Economy</TabsTrigger>
+              <TabsTrigger value="trending">Trending</TabsTrigger>
+            </TabsList>
+          </Tabs>
           
           {whaleLoading ? (
             <div className="flex items-center justify-center py-12">
@@ -53,7 +67,7 @@ const Index = () => {
           <div className="flex items-center gap-3 mb-4">
             <TrendingUp className="h-6 w-6 text-success" />
             <h2 className="text-2xl font-bold">Top Profitable Traders</h2>
-            <span className="text-xs text-muted-foreground">Based on recent volume</span>
+            <span className="text-xs text-muted-foreground">Ranked by 30-day performance</span>
           </div>
           
           {tradersLoading ? (

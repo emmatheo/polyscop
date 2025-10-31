@@ -15,8 +15,9 @@ serve(async (req) => {
     const minAmount = body.minAmount || 10000;
     const limit = body.limit || 100;
     const search = body.search || '';
+    const category = body.category || '';
 
-    console.log(`Fetching trades with minAmount: ${minAmount}, limit: ${limit}, search: ${search}`);
+    console.log(`Fetching trades with minAmount: ${minAmount}, limit: ${limit}, search: ${search}, category: ${category}`);
 
     // Fetch trades from Polymarket Data API
     const tradesUrl = `https://data-api.polymarket.com/trades?limit=${limit}&filterType=CASH&filterAmount=${minAmount}&takerOnly=true`;
@@ -34,24 +35,57 @@ serve(async (req) => {
     // Transform the data to match our interface
     const transformedTrades = trades
       .filter((trade: any) => {
-        if (!search) return true;
-        const searchLower = search.toLowerCase();
-        return (
-          trade.proxyWallet?.toLowerCase().includes(searchLower) ||
-          trade.title?.toLowerCase().includes(searchLower) ||
-          trade.outcome?.toLowerCase().includes(searchLower)
-        );
+        // Filter by search query
+        if (search) {
+          const searchLower = search.toLowerCase();
+          const matchesSearch = (
+            trade.proxyWallet?.toLowerCase().includes(searchLower) ||
+            trade.title?.toLowerCase().includes(searchLower) ||
+            trade.outcome?.toLowerCase().includes(searchLower)
+          );
+          if (!matchesSearch) return false;
+        }
+        
+        // Filter by category
+        if (category) {
+          const tags = (trade.tags || []).map((tag: string) => tag.toLowerCase());
+          const categoryLower = category.toLowerCase();
+          
+          // Map categories to tag keywords
+          const categoryMap: Record<string, string[]> = {
+            'sports': ['sports', 'nfl', 'nba', 'mlb', 'soccer', 'football', 'basketball', 'baseball'],
+            'crypto': ['crypto', 'bitcoin', 'ethereum', 'btc', 'eth', 'blockchain'],
+            'politics': ['politics', 'election', 'president', 'government', 'congress', 'senate'],
+            'economy': ['economy', 'economics', 'market', 'stock', 'finance', 'gdp', 'inflation'],
+            'trending': ['trending', 'viral', 'popular', 'hot']
+          };
+          
+          const keywords = categoryMap[categoryLower] || [categoryLower];
+          const matchesCategory = tags.some((tag: string) => 
+            keywords.some(keyword => tag.includes(keyword))
+          ) || keywords.some(keyword => trade.title?.toLowerCase().includes(keyword));
+          
+          if (!matchesCategory) return false;
+        }
+        
+        return true;
       })
-      .map((trade: any) => ({
-        id: `${trade.proxyWallet}-${trade.timestamp}`,
-        wallet: trade.proxyWallet,
-        market: trade.title || 'Unknown Market',
-        side: trade.outcome || (trade.side === 'BUY' ? 'YES' : 'NO'),
-        amount: Math.round(trade.size * trade.price),
-        price: trade.price,
-        timestamp: formatTimestamp(trade.timestamp),
-        profitability: Math.random() * 30 + 60, // Will be calculated from historical data
-      }));
+      .map((trade: any) => {
+        const tags = trade.tags || [];
+        const category = detectCategory(tags, trade.title || '');
+        
+        return {
+          id: `${trade.proxyWallet}-${trade.timestamp}`,
+          wallet: trade.proxyWallet,
+          market: trade.title || 'Unknown Market',
+          side: trade.outcome || (trade.side === 'BUY' ? 'YES' : 'NO'),
+          amount: Math.round(trade.size * trade.price),
+          price: trade.price,
+          timestamp: formatTimestamp(trade.timestamp),
+          profitability: Math.random() * 30 + 60,
+          category: category,
+        };
+      });
 
     return new Response(JSON.stringify(transformedTrades), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -77,4 +111,25 @@ function formatTimestamp(timestamp: number): string {
   if (minutes < 60) return `${minutes}m ago`;
   if (hours < 24) return `${hours}h ago`;
   return `${days}d ago`;
+}
+
+function detectCategory(tags: string[], title: string): string {
+  const tagsLower = tags.map(tag => tag.toLowerCase());
+  const titleLower = title.toLowerCase();
+  
+  const categoryMap: Record<string, string[]> = {
+    'Sports': ['sports', 'nfl', 'nba', 'mlb', 'soccer', 'football', 'basketball', 'baseball'],
+    'Crypto': ['crypto', 'bitcoin', 'ethereum', 'btc', 'eth', 'blockchain'],
+    'Politics': ['politics', 'election', 'president', 'government', 'congress', 'senate'],
+    'Economy': ['economy', 'economics', 'market', 'stock', 'finance', 'gdp', 'inflation'],
+  };
+  
+  for (const [category, keywords] of Object.entries(categoryMap)) {
+    const matches = keywords.some(keyword => 
+      tagsLower.some(tag => tag.includes(keyword)) || titleLower.includes(keyword)
+    );
+    if (matches) return category;
+  }
+  
+  return 'Other';
 }

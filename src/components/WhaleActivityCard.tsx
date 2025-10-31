@@ -16,6 +16,7 @@ interface WhaleActivity {
   price: number;
   timestamp: string;
   profitability: number; // trader's win rate
+  category: string;
 }
 
 interface WhaleActivityCardProps {
@@ -37,7 +38,7 @@ export const WhaleActivityCard = ({ activity }: WhaleActivityCardProps) => {
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 space-y-2">
             {/* Wallet Info */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <Wallet className="h-4 w-4 text-warning" />
               <span className="font-mono text-sm font-medium">
                 {activity.wallet.slice(0, 6)}...{activity.wallet.slice(-4)}
@@ -53,6 +54,9 @@ export const WhaleActivityCard = ({ activity }: WhaleActivityCardProps) => {
               >
                 <Copy className="h-3 w-3" />
               </Button>
+              <Badge variant="outline" className="text-xs bg-primary/10 border-primary/30">
+                {activity.category}
+              </Badge>
               <Badge variant="outline" className="text-xs bg-warning/10 border-warning/30 text-warning">
                 {activity.profitability.toFixed(0)}% Win Rate
               </Badge>
