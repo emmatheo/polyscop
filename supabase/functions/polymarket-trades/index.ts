@@ -53,11 +53,15 @@ serve(async (req) => {
           
           // Map categories to tag keywords
           const categoryMap: Record<string, string[]> = {
-            'sports': ['sports', 'nfl', 'nba', 'mlb', 'soccer', 'football', 'basketball', 'baseball'],
-            'crypto': ['crypto', 'bitcoin', 'ethereum', 'btc', 'eth', 'blockchain'],
-            'politics': ['politics', 'election', 'president', 'government', 'congress', 'senate'],
-            'economy': ['economy', 'economics', 'market', 'stock', 'finance', 'gdp', 'inflation'],
-            'trending': ['trending', 'viral', 'popular', 'hot']
+            'sports': ['sports', 'nfl', 'nba', 'mlb', 'soccer', 'football', 'basketball', 'baseball', 'tennis', 'hockey'],
+            'crypto': ['crypto', 'bitcoin', 'ethereum', 'btc', 'eth', 'blockchain', 'defi', 'nft'],
+            'politics': ['politics', 'election', 'president', 'government', 'congress', 'senate', 'policy', 'law'],
+            'economy': ['economy', 'economics', 'market', 'stock', 'finance', 'gdp', 'inflation', 'fed', 'interest'],
+            'trending': ['trending', 'viral', 'popular', 'hot'],
+            'entertainment': ['entertainment', 'movie', 'film', 'music', 'celebrity', 'awards', 'tv', 'show'],
+            'technology': ['technology', 'tech', 'ai', 'software', 'hardware', 'startup', 'innovation', 'apple', 'google'],
+            'weather': ['weather', 'climate', 'hurricane', 'temperature', 'storm', 'forecast'],
+            'gaming': ['gaming', 'esports', 'game', 'video game', 'twitch', 'streamer', 'tournament']
           };
           
           const keywords = categoryMap[categoryLower] || [categoryLower];
@@ -118,10 +122,14 @@ function detectCategory(tags: string[], title: string): string {
   const titleLower = title.toLowerCase();
   
   const categoryMap: Record<string, string[]> = {
-    'Sports': ['sports', 'nfl', 'nba', 'mlb', 'soccer', 'football', 'basketball', 'baseball'],
-    'Crypto': ['crypto', 'bitcoin', 'ethereum', 'btc', 'eth', 'blockchain'],
-    'Politics': ['politics', 'election', 'president', 'government', 'congress', 'senate'],
-    'Economy': ['economy', 'economics', 'market', 'stock', 'finance', 'gdp', 'inflation'],
+    'Sports': ['sports', 'nfl', 'nba', 'mlb', 'soccer', 'football', 'basketball', 'baseball', 'tennis', 'hockey'],
+    'Crypto': ['crypto', 'bitcoin', 'ethereum', 'btc', 'eth', 'blockchain', 'defi', 'nft'],
+    'Politics': ['politics', 'election', 'president', 'government', 'congress', 'senate', 'policy', 'law'],
+    'Economy': ['economy', 'economics', 'market', 'stock', 'finance', 'gdp', 'inflation', 'fed', 'interest'],
+    'Entertainment': ['entertainment', 'movie', 'film', 'music', 'celebrity', 'awards', 'tv', 'show'],
+    'Technology': ['technology', 'tech', 'ai', 'software', 'hardware', 'startup', 'innovation', 'apple', 'google'],
+    'Weather': ['weather', 'climate', 'hurricane', 'temperature', 'storm', 'forecast'],
+    'Gaming': ['gaming', 'esports', 'game', 'video game', 'twitch', 'streamer', 'tournament'],
   };
   
   for (const [category, keywords] of Object.entries(categoryMap)) {

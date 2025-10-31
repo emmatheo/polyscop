@@ -34,7 +34,7 @@ export const WhaleActivityCard = ({ activity }: WhaleActivityCardProps) => {
 
   return (
     <>
-      <Card className="p-4 hover:bg-muted/50 transition-colors cursor-pointer" onClick={() => setShowHistory(true)}>
+      <Card className="p-4 hover:bg-muted/50 hover:scale-[1.01] transition-all duration-300 cursor-pointer hover:shadow-lg" onClick={() => setShowHistory(true)}>
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 space-y-2">
             {/* Wallet Info */}

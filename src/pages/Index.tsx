@@ -15,7 +15,14 @@ const Index = () => {
   const { data: topTraders, isLoading: tradersLoading, error: tradersError } = useTopTraders(searchQuery);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Background Watermark */}
+      <div className="fixed inset-0 flex items-center justify-center pointer-events-none opacity-[0.03] select-none">
+        <span className="text-[20rem] font-bold text-foreground rotate-[-45deg]">
+          POLYSCOPE
+        </span>
+      </div>
+      
       <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
       <main className="container px-4 py-8 space-y-6">
@@ -29,13 +36,17 @@ const Index = () => {
           
           {/* Category Filters */}
           <Tabs value={category} onValueChange={setCategory} className="mb-6">
-            <TabsList className="grid w-full grid-cols-6">
+            <TabsList className="grid w-full grid-cols-4 md:grid-cols-5 lg:grid-cols-10 gap-2">
               <TabsTrigger value="">All</TabsTrigger>
               <TabsTrigger value="sports">Sports</TabsTrigger>
               <TabsTrigger value="crypto">Crypto</TabsTrigger>
               <TabsTrigger value="politics">Politics</TabsTrigger>
               <TabsTrigger value="economy">Economy</TabsTrigger>
               <TabsTrigger value="trending">Trending</TabsTrigger>
+              <TabsTrigger value="entertainment">Entertainment</TabsTrigger>
+              <TabsTrigger value="technology">Tech</TabsTrigger>
+              <TabsTrigger value="weather">Weather</TabsTrigger>
+              <TabsTrigger value="gaming">Gaming</TabsTrigger>
             </TabsList>
           </Tabs>
           
@@ -51,8 +62,14 @@ const Index = () => {
             </Alert>
           ) : whaleActivity && whaleActivity.length > 0 ? (
             <div className="space-y-3">
-              {whaleActivity.map((activity) => (
-                <WhaleActivityCard key={activity.id} activity={activity} />
+              {whaleActivity.map((activity, index) => (
+                <div 
+                  key={activity.id} 
+                  className="animate-fade-in"
+                  style={{ animationDelay: `${index * 0.05}s` }}
+                >
+                  <WhaleActivityCard activity={activity} />
+                </div>
               ))}
             </div>
           ) : (
@@ -83,7 +100,13 @@ const Index = () => {
           ) : topTraders && topTraders.length > 0 ? (
             <div className="space-y-3">
               {topTraders.map((trader, idx) => (
-                <TraderCard key={trader.wallet} trader={trader} rank={idx + 1} />
+                <div 
+                  key={trader.wallet} 
+                  className="animate-fade-in"
+                  style={{ animationDelay: `${idx * 0.05}s` }}
+                >
+                  <TraderCard trader={trader} rank={idx + 1} />
+                </div>
               ))}
             </div>
           ) : (
@@ -92,6 +115,13 @@ const Index = () => {
             </p>
           )}
         </section>
+
+        {/* Footer */}
+        <footer className="mt-12 pb-8 text-center">
+          <p className="text-sm text-muted-foreground">
+            Created by <span className="text-primary font-semibold">timmyy</span>
+          </p>
+        </footer>
       </main>
     </div>
   );
