@@ -32,10 +32,10 @@ export const TraderCard = ({ trader, rank }: TraderCardProps) => {
 
   return (
     <>
-      <Card className="p-4 hover:bg-muted/50 transition-colors cursor-pointer" onClick={() => setShowHistory(true)}>
+      <Card className="p-4 hover:bg-muted/50 hover:scale-[1.02] transition-all duration-300 cursor-pointer hover:shadow-xl hover:border-success/50 hover:glow-primary group" onClick={() => setShowHistory(true)}>
         <div className="flex items-start gap-4">
           {/* Rank */}
-          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center">
+          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
             <span className="text-sm font-bold text-white">#{rank}</span>
           </div>
 
@@ -72,21 +72,21 @@ export const TraderCard = ({ trader, rank }: TraderCardProps) => {
           <div className="grid grid-cols-3 gap-3">
             <div className="space-y-1">
               <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                <Target className="h-3 w-3" />
+                <Target className="h-3 w-3 group-hover:scale-125 transition-transform duration-300" />
                 Win Rate
               </div>
               <div className="text-sm font-semibold">{trader.winRate}%</div>
             </div>
             <div className="space-y-1">
               <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                <TrendingUp className="h-3 w-3" />
+                <TrendingUp className="h-3 w-3 group-hover:scale-125 transition-transform duration-300" />
                 Trades
               </div>
               <div className="text-sm font-semibold">{trader.totalTrades}</div>
             </div>
             <div className="space-y-1">
               <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                <DollarSign className="h-3 w-3" />
+                <DollarSign className="h-3 w-3 group-hover:scale-125 transition-transform duration-300" />
                 24h
               </div>
               <div className={cn(

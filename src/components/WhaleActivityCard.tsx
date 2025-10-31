@@ -34,12 +34,12 @@ export const WhaleActivityCard = ({ activity }: WhaleActivityCardProps) => {
 
   return (
     <>
-      <Card className="p-4 hover:bg-muted/50 hover:scale-[1.01] transition-all duration-300 cursor-pointer hover:shadow-lg" onClick={() => setShowHistory(true)}>
+      <Card className="p-4 hover:bg-muted/50 hover:scale-[1.02] transition-all duration-300 cursor-pointer hover:shadow-xl hover:border-primary/50 hover:glow-primary group" onClick={() => setShowHistory(true)}>
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 space-y-2">
             {/* Wallet Info */}
             <div className="flex items-center gap-2 flex-wrap">
-              <Wallet className="h-4 w-4 text-warning" />
+              <Wallet className="h-4 w-4 text-warning group-hover:scale-110 transition-transform duration-300" />
               <span className="font-mono text-sm font-medium">
                 {activity.wallet.slice(0, 6)}...{activity.wallet.slice(-4)}
               </span>
@@ -73,7 +73,7 @@ export const WhaleActivityCard = ({ activity }: WhaleActivityCardProps) => {
               "flex items-center gap-1 font-medium",
               isBuy ? "text-success" : "text-destructive"
             )}>
-              {isBuy ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
+              {isBuy ? <TrendingUp className="h-4 w-4 group-hover:scale-125 transition-transform duration-300" /> : <TrendingDown className="h-4 w-4 group-hover:scale-125 transition-transform duration-300" />}
               {activity.side}
             </div>
             <span className="text-muted-foreground">

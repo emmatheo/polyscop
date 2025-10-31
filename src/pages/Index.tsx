@@ -27,26 +27,26 @@ const Index = () => {
 
       <main className="container px-4 py-8 space-y-6">
         {/* Live Whale Activity Feed */}
-        <section>
+        <section className="animate-fade-in" style={{ animationDelay: '0.1s' }}>
           <div className="flex items-center gap-3 mb-4">
             <Activity className="h-6 w-6 text-warning animate-pulse" />
-            <h2 className="text-2xl font-bold">Live Whale Activity</h2>
-            <span className="text-xs text-muted-foreground">Updates every 30s</span>
+            <h2 className="text-2xl font-bold text-gradient">Live Whale Activity</h2>
+            <span className="text-xs text-muted-foreground animate-pulse">Updates every 30s</span>
           </div>
           
           {/* Category Filters */}
-          <Tabs value={category} onValueChange={setCategory} className="mb-6">
-            <TabsList className="grid w-full grid-cols-4 md:grid-cols-5 lg:grid-cols-10 gap-2">
-              <TabsTrigger value="">All</TabsTrigger>
-              <TabsTrigger value="sports">Sports</TabsTrigger>
-              <TabsTrigger value="crypto">Crypto</TabsTrigger>
-              <TabsTrigger value="politics">Politics</TabsTrigger>
-              <TabsTrigger value="economy">Economy</TabsTrigger>
-              <TabsTrigger value="trending">Trending</TabsTrigger>
-              <TabsTrigger value="entertainment">Entertainment</TabsTrigger>
-              <TabsTrigger value="technology">Tech</TabsTrigger>
-              <TabsTrigger value="weather">Weather</TabsTrigger>
-              <TabsTrigger value="gaming">Gaming</TabsTrigger>
+          <Tabs value={category} onValueChange={setCategory} className="mb-6 animate-fade-in">
+            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-10 gap-1 p-1">
+              <TabsTrigger value="" className="transition-all duration-300 hover:scale-105">All</TabsTrigger>
+              <TabsTrigger value="sports" className="transition-all duration-300 hover:scale-105">Sports</TabsTrigger>
+              <TabsTrigger value="crypto" className="transition-all duration-300 hover:scale-105">Crypto</TabsTrigger>
+              <TabsTrigger value="politics" className="transition-all duration-300 hover:scale-105">Politics</TabsTrigger>
+              <TabsTrigger value="economy" className="transition-all duration-300 hover:scale-105">Economy</TabsTrigger>
+              <TabsTrigger value="trending" className="transition-all duration-300 hover:scale-105">Trending</TabsTrigger>
+              <TabsTrigger value="entertainment" className="transition-all duration-300 hover:scale-105">Entertainment</TabsTrigger>
+              <TabsTrigger value="technology" className="transition-all duration-300 hover:scale-105">Tech</TabsTrigger>
+              <TabsTrigger value="weather" className="transition-all duration-300 hover:scale-105">Weather</TabsTrigger>
+              <TabsTrigger value="gaming" className="transition-all duration-300 hover:scale-105">Gaming</TabsTrigger>
             </TabsList>
           </Tabs>
           
@@ -80,10 +80,10 @@ const Index = () => {
         </section>
 
         {/* Top Profitable Traders */}
-        <section>
+        <section className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
           <div className="flex items-center gap-3 mb-4">
-            <TrendingUp className="h-6 w-6 text-success" />
-            <h2 className="text-2xl font-bold">Top Profitable Traders</h2>
+            <TrendingUp className="h-6 w-6 text-success animate-pulse" />
+            <h2 className="text-2xl font-bold text-gradient">Top Profitable Traders</h2>
             <span className="text-xs text-muted-foreground">Ranked by 30-day performance</span>
           </div>
           
