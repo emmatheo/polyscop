@@ -12,11 +12,12 @@ import { AIPredictionChat } from "@/components/AIPredictionChat";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("all");
   const [minAmount, setMinAmount] = useState(5000);
   const [showAIChat, setShowAIChat] = useState(false);
   
-  const { data: whaleActivity, isLoading: whaleLoading, error: whaleError } = useWhaleActivity(searchQuery, category, minAmount);
+  const filteredCategory = category === "all" ? "" : category;
+  const { data: whaleActivity, isLoading: whaleLoading, error: whaleError } = useWhaleActivity(searchQuery, filteredCategory, minAmount);
   const { data: topTraders, isLoading: tradersLoading, error: tradersError } = useTopTraders(searchQuery);
 
   return (
@@ -51,7 +52,7 @@ const Index = () => {
                 <SelectValue placeholder="Filter by Category" />
               </SelectTrigger>
               <SelectContent className="bg-card border-primary/20">
-                <SelectItem value="">All Categories</SelectItem>
+                <SelectItem value="all">All Categories</SelectItem>
                 <SelectItem value="sports">🏆 Sports</SelectItem>
                 <SelectItem value="crypto">₿ Crypto</SelectItem>
                 <SelectItem value="politics">🗳️ Politics</SelectItem>
