@@ -1,16 +1,29 @@
-import { Search, TrendingUp, Activity } from "lucide-react";
+import { Search, TrendingUp, Activity, Moon, Sun, DollarSign } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { useTheme } from "next-themes";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface HeaderProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
+  minAmount: number;
+  setMinAmount: (amount: number) => void;
 }
 
-export const Header = ({ searchQuery, setSearchQuery }: HeaderProps) => {
+export const Header = ({ searchQuery, setSearchQuery, minAmount, setMinAmount }: HeaderProps) => {
+  const { theme, setTheme } = useTheme();
+  
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center gap-4 px-4">
+      <div className="container flex h-16 items-center gap-3 px-4">
         {/* Logo */}
         <div className="flex items-center gap-3">
           <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center">
@@ -35,13 +48,41 @@ export const Header = ({ searchQuery, setSearchQuery }: HeaderProps) => {
           </div>
         </div>
 
+        {/* Whale Price Range Filter */}
+        <Select value={minAmount.toString()} onValueChange={(value) => setMinAmount(Number(value))}>
+          <SelectTrigger className="w-[180px] bg-muted/50">
+            <DollarSign className="h-4 w-4 mr-2 text-warning" />
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="5000">$5K+ Whales</SelectItem>
+            <SelectItem value="10000">$10K+ Whales</SelectItem>
+            <SelectItem value="25000">$25K+ Whales</SelectItem>
+            <SelectItem value="50000">$50K+ Whales</SelectItem>
+            <SelectItem value="100000">$100K+ Whales</SelectItem>
+            <SelectItem value="250000">$250K+ Whales</SelectItem>
+            <SelectItem value="500000">$500K+ Whales</SelectItem>
+            <SelectItem value="1000000">$1M+ Whales</SelectItem>
+          </SelectContent>
+        </Select>
+
         {/* Live Status */}
-        <div className="flex items-center gap-2">
-          <Badge variant="outline" className="gap-1.5 bg-success/10 border-success/30 text-success">
-            <Activity className="h-3 w-3 animate-pulse" />
-            Live Tracking
-          </Badge>
-        </div>
+        <Badge variant="outline" className="gap-1.5 bg-success/10 border-success/30 text-success">
+          <Activity className="h-3 w-3 animate-pulse" />
+          Live
+        </Badge>
+
+        {/* Theme Toggle */}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          className="hover:bg-muted/50 transition-all duration-300"
+        >
+          <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <span className="sr-only">Toggle theme</span>
+        </Button>
       </div>
     </header>
   );

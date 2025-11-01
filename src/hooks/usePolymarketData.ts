@@ -22,13 +22,13 @@ export interface Trader {
   profitChange24h: number;
 }
 
-export const useWhaleActivity = (searchQuery: string = "", category: string = "") => {
+export const useWhaleActivity = (searchQuery: string = "", category: string = "", minAmount: number = 5000) => {
   return useQuery({
-    queryKey: ["whale-activity", searchQuery, category],
+    queryKey: ["whale-activity", searchQuery, category, minAmount],
     queryFn: async () => {
       const { data, error } = await supabase.functions.invoke("polymarket-trades", {
         body: { 
-          minAmount: 50000, // Minimum $50k for whale trades
+          minAmount: minAmount,
           limit: 50,
           search: searchQuery,
           category: category

@@ -10,8 +10,9 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [category, setCategory] = useState("");
+  const [minAmount, setMinAmount] = useState(5000);
   
-  const { data: whaleActivity, isLoading: whaleLoading, error: whaleError } = useWhaleActivity(searchQuery, category);
+  const { data: whaleActivity, isLoading: whaleLoading, error: whaleError } = useWhaleActivity(searchQuery, category, minAmount);
   const { data: topTraders, isLoading: tradersLoading, error: tradersError } = useTopTraders(searchQuery);
 
   return (
@@ -23,7 +24,12 @@ const Index = () => {
         </span>
       </div>
       
-      <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <Header 
+        searchQuery={searchQuery} 
+        setSearchQuery={setSearchQuery}
+        minAmount={minAmount}
+        setMinAmount={setMinAmount}
+      />
 
       <main className="container px-4 py-8 space-y-6">
         {/* Live Whale Activity Feed */}

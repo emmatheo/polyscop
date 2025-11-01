@@ -54,10 +54,13 @@ export const WhaleActivityCard = ({ activity }: WhaleActivityCardProps) => {
               >
                 <Copy className="h-3 w-3" />
               </Button>
+              <Badge variant="outline" className="text-xs bg-warning/10 border-warning/30 text-warning animate-pulse">
+                🐋 Whale
+              </Badge>
               <Badge variant="outline" className="text-xs bg-primary/10 border-primary/30">
                 {activity.category}
               </Badge>
-              <Badge variant="outline" className="text-xs bg-warning/10 border-warning/30 text-warning">
+              <Badge variant="outline" className="text-xs bg-success/10 border-success/30 text-success">
                 {activity.profitability.toFixed(0)}% Win Rate
               </Badge>
             </div>
