@@ -5,12 +5,16 @@ import { Activity, TrendingUp, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useWhaleActivity, useTopTraders } from "@/hooks/usePolymarketData";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { MessageSquare } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { AIPredictionChat } from "@/components/AIPredictionChat";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [category, setCategory] = useState("");
   const [minAmount, setMinAmount] = useState(5000);
+  const [showAIChat, setShowAIChat] = useState(false);
   
   const { data: whaleActivity, isLoading: whaleLoading, error: whaleError } = useWhaleActivity(searchQuery, category, minAmount);
   const { data: topTraders, isLoading: tradersLoading, error: tradersError } = useTopTraders(searchQuery);
@@ -40,21 +44,34 @@ const Index = () => {
             <span className="text-xs text-muted-foreground animate-pulse">Updates every 30s</span>
           </div>
           
-          {/* Category Filters */}
-          <Tabs value={category} onValueChange={setCategory} className="mb-6 animate-fade-in">
-            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-10 gap-1 p-1">
-              <TabsTrigger value="" className="transition-all duration-300 hover:scale-105">All</TabsTrigger>
-              <TabsTrigger value="sports" className="transition-all duration-300 hover:scale-105">Sports</TabsTrigger>
-              <TabsTrigger value="crypto" className="transition-all duration-300 hover:scale-105">Crypto</TabsTrigger>
-              <TabsTrigger value="politics" className="transition-all duration-300 hover:scale-105">Politics</TabsTrigger>
-              <TabsTrigger value="economy" className="transition-all duration-300 hover:scale-105">Economy</TabsTrigger>
-              <TabsTrigger value="trending" className="transition-all duration-300 hover:scale-105">Trending</TabsTrigger>
-              <TabsTrigger value="entertainment" className="transition-all duration-300 hover:scale-105">Entertainment</TabsTrigger>
-              <TabsTrigger value="technology" className="transition-all duration-300 hover:scale-105">Tech</TabsTrigger>
-              <TabsTrigger value="weather" className="transition-all duration-300 hover:scale-105">Weather</TabsTrigger>
-              <TabsTrigger value="gaming" className="transition-all duration-300 hover:scale-105">Gaming</TabsTrigger>
-            </TabsList>
-          </Tabs>
+          {/* Category Filters & AI Chat Button */}
+          <div className="flex flex-col sm:flex-row gap-4 mb-6 animate-fade-in">
+            <Select value={category} onValueChange={setCategory}>
+              <SelectTrigger className="w-full sm:w-[280px] bg-card border-primary/20 hover:border-primary/50 transition-all duration-300">
+                <SelectValue placeholder="Filter by Category" />
+              </SelectTrigger>
+              <SelectContent className="bg-card border-primary/20">
+                <SelectItem value="">All Categories</SelectItem>
+                <SelectItem value="sports">🏆 Sports</SelectItem>
+                <SelectItem value="crypto">₿ Crypto</SelectItem>
+                <SelectItem value="politics">🗳️ Politics</SelectItem>
+                <SelectItem value="economy">💹 Economy</SelectItem>
+                <SelectItem value="trending">🔥 Trending</SelectItem>
+                <SelectItem value="entertainment">🎬 Entertainment</SelectItem>
+                <SelectItem value="technology">💻 Technology</SelectItem>
+                <SelectItem value="weather">🌤️ Weather</SelectItem>
+                <SelectItem value="gaming">🎮 Gaming</SelectItem>
+              </SelectContent>
+            </Select>
+            
+            <Button 
+              onClick={() => setShowAIChat(true)}
+              className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 transition-all duration-300 hover:scale-105 hover:shadow-lg"
+            >
+              <MessageSquare className="h-4 w-4 mr-2" />
+              AI Predictions
+            </Button>
+          </div>
           
           {whaleLoading ? (
             <div className="flex items-center justify-center py-12">
@@ -129,6 +146,8 @@ const Index = () => {
           </p>
         </footer>
       </main>
+      
+      <AIPredictionChat open={showAIChat} onOpenChange={setShowAIChat} />
     </div>
   );
 };
