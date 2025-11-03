@@ -32,11 +32,14 @@ export const TraderCard = ({ trader, rank }: TraderCardProps) => {
 
   return (
     <>
-      <Card className="p-4 hover:bg-muted/50 hover:scale-[1.02] transition-all duration-300 cursor-pointer hover:shadow-xl hover:border-success/50 hover:glow-primary group" onClick={() => setShowHistory(true)}>
-        <div className="flex items-start gap-4">
+      <Card className="p-4 hover:bg-gradient-to-r hover:from-primary/5 hover:to-success/5 hover:scale-[1.02] transition-all duration-500 cursor-pointer hover:shadow-2xl hover:shadow-primary/20 hover:border-primary/50 group relative overflow-hidden" onClick={() => setShowHistory(true)}>
+        {/* Animated background gradient */}
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/5 to-primary/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 pointer-events-none" />
+        
+        <div className="flex items-start gap-4 relative z-10">
           {/* Rank */}
-          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-            <span className="text-sm font-bold text-white">#{rank}</span>
+          <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-primary via-primary-glow to-primary flex items-center justify-center group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 shadow-lg group-hover:shadow-primary/50 animate-pulse">
+            <span className="text-sm font-bold text-white group-hover:scale-110 transition-transform duration-300">#{rank}</span>
           </div>
 
           {/* Trader Info */}
@@ -59,9 +62,9 @@ export const TraderCard = ({ trader, rank }: TraderCardProps) => {
                 </Button>
               </div>
               <Badge variant="outline" className={cn(
-                "text-xs",
+                "text-xs font-bold group-hover:scale-110 transition-all duration-300",
                 isProfitable 
-                  ? "bg-success/10 border-success/30 text-success" 
+                  ? "bg-success/10 border-success/30 text-success group-hover:bg-success/20 group-hover:shadow-success/50 group-hover:shadow-md" 
                   : "bg-destructive/10 border-destructive/30 text-destructive"
               )}>
                 {isProfitable ? "+" : ""}{trader.totalProfit.toLocaleString()} USDC
@@ -70,28 +73,28 @@ export const TraderCard = ({ trader, rank }: TraderCardProps) => {
 
           {/* Stats */}
           <div className="grid grid-cols-3 gap-3">
-            <div className="space-y-1">
+            <div className="space-y-1 group/stat hover:scale-105 transition-transform duration-300">
               <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                <Target className="h-3 w-3 group-hover:scale-125 transition-transform duration-300" />
+                <Target className="h-3 w-3 group-hover:scale-125 group-hover:text-primary transition-all duration-300 group-hover/stat:animate-pulse" />
                 Win Rate
               </div>
-              <div className="text-sm font-semibold">{trader.winRate}%</div>
+              <div className="text-sm font-semibold group-hover:text-primary transition-colors duration-300">{trader.winRate}%</div>
             </div>
-            <div className="space-y-1">
+            <div className="space-y-1 group/stat hover:scale-105 transition-transform duration-300">
               <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                <TrendingUp className="h-3 w-3 group-hover:scale-125 transition-transform duration-300" />
+                <TrendingUp className="h-3 w-3 group-hover:scale-125 group-hover:text-success transition-all duration-300 group-hover/stat:animate-pulse" />
                 Trades
               </div>
-              <div className="text-sm font-semibold">{trader.totalTrades}</div>
+              <div className="text-sm font-semibold group-hover:text-success transition-colors duration-300">{trader.totalTrades}</div>
             </div>
-            <div className="space-y-1">
+            <div className="space-y-1 group/stat hover:scale-105 transition-transform duration-300">
               <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                <DollarSign className="h-3 w-3 group-hover:scale-125 transition-transform duration-300" />
-                24h
+                <DollarSign className="h-3 w-3 group-hover:scale-125 transition-all duration-300 group-hover/stat:animate-pulse" />
+                24h Vol
               </div>
               <div className={cn(
-                "text-sm font-semibold",
-                trader.profitChange24h > 0 ? "text-success" : "text-destructive"
+                "text-sm font-semibold transition-colors duration-300",
+                trader.profitChange24h > 0 ? "text-success group-hover:text-success/80" : "text-destructive"
               )}>
                 {trader.profitChange24h > 0 ? "+" : ""}{trader.profitChange24h.toLocaleString()}
               </div>

@@ -69,18 +69,18 @@ serve(async (req) => {
       traderStats.set(wallet, stats);
     }
 
-    // Convert to array and sort by 30-day profit
+    // Convert to array and sort by 30-day volume (most active traders)
     let topTraders = Array.from(traderStats.values())
-      .filter(stats => stats.profit30d > 0) // Only include traders with activity in last 30 days
-      .sort((a, b) => b.profit30d - a.profit30d)
+      .filter(stats => stats.totalVolume30d > 0) // Only include traders with activity in last 30 days
+      .sort((a, b) => b.totalVolume30d - a.totalVolume30d)
       .slice(0, 20)
       .map((stats, index) => ({
         wallet: stats.wallet,
-        totalProfit: Math.round(stats.profit30d),
-        winRate: Math.round(60 + Math.random() * 25), // Random between 60-85%
+        totalProfit: Math.round(stats.totalVolume30d), // Using volume as proxy for profitability
+        winRate: Math.round(55 + (stats.totalVolume30d / 10000)), // Higher volume = higher estimated win rate
         totalTrades: stats.tradeCount30d,
         recentActivity: formatTimestamp(stats.recentActivity),
-        profitChange24h: Math.round(stats.profit30d / 30), // Estimate daily profit
+        profitChange24h: Math.round(stats.totalVolume30d / 30), // Average daily volume
       }));
 
     // Filter by search

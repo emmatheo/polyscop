@@ -25,7 +25,7 @@ const Index = () => {
       {/* Background Watermark */}
       <div className="fixed inset-0 flex items-center justify-center pointer-events-none opacity-[0.03] select-none">
         <span className="text-[20rem] font-bold text-foreground rotate-[-45deg]">
-          POLYSCOPE
+          POLYSCOP
         </span>
       </div>
       
@@ -104,11 +104,16 @@ const Index = () => {
         </section>
 
         {/* Top Profitable Traders */}
-        <section className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
-          <div className="flex items-center gap-3 mb-4">
-            <TrendingUp className="h-6 w-6 text-success animate-pulse" />
-            <h2 className="text-2xl font-bold text-gradient">Top Profitable Traders</h2>
-            <span className="text-xs text-muted-foreground">Ranked by 30-day performance</span>
+        <section className="animate-fade-in relative" style={{ animationDelay: '0.2s' }}>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="relative">
+              <TrendingUp className="h-7 w-7 text-success animate-pulse" />
+              <div className="absolute inset-0 h-7 w-7 text-success animate-ping opacity-75" />
+            </div>
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-success via-primary to-success bg-clip-text text-transparent animate-gradient">
+              Top Volume Traders
+            </h2>
+            <span className="text-xs text-muted-foreground bg-muted/50 px-2 py-1 rounded-full">Ranked by 30-day volume</span>
           </div>
           
           {tradersLoading ? (
