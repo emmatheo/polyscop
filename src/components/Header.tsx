@@ -30,7 +30,7 @@ export const Header = ({ searchQuery, setSearchQuery, minAmount, setMinAmount }:
             <TrendingUp className="h-5 w-5 text-white" />
           </div>
           <div className="flex flex-col">
-            <span className="text-xl font-bold text-gradient leading-none">Polyscope</span>
+            <span className="text-xl font-bold text-gradient leading-none">Polyscop</span>
             <span className="text-[10px] text-muted-foreground">Whale & Trader Intelligence</span>
           </div>
         </div>
