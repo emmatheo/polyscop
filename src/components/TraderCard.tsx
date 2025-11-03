@@ -2,7 +2,6 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TrendingUp, DollarSign, Target, Copy } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { WalletTradeHistory } from "./WalletTradeHistory";
 import { toast } from "sonner";
@@ -22,7 +21,6 @@ interface TraderCardProps {
 }
 
 export const TraderCard = ({ trader, rank }: TraderCardProps) => {
-  const isProfitable = trader.totalProfit > 0;
   const [showHistory, setShowHistory] = useState(false);
   
   const copyWallet = () => {
@@ -61,13 +59,8 @@ export const TraderCard = ({ trader, rank }: TraderCardProps) => {
                   <Copy className="h-3 w-3" />
                 </Button>
               </div>
-              <Badge variant="outline" className={cn(
-                "text-xs font-bold group-hover:scale-110 transition-all duration-300",
-                isProfitable 
-                  ? "bg-success/10 border-success/30 text-success group-hover:bg-success/20 group-hover:shadow-success/50 group-hover:shadow-md" 
-                  : "bg-destructive/10 border-destructive/30 text-destructive"
-              )}>
-                {isProfitable ? "+" : ""}{trader.totalProfit.toLocaleString()} USDC
+              <Badge variant="outline" className="text-xs font-bold group-hover:scale-110 transition-all duration-300 bg-primary/10 border-primary/30 text-primary group-hover:bg-primary/20 group-hover:shadow-primary/50 group-hover:shadow-md">
+                ${trader.totalProfit.toLocaleString()}
               </Badge>
             </div>
 
@@ -76,7 +69,7 @@ export const TraderCard = ({ trader, rank }: TraderCardProps) => {
             <div className="space-y-1 group/stat hover:scale-105 transition-transform duration-300">
               <div className="flex items-center gap-1 text-xs text-muted-foreground">
                 <Target className="h-3 w-3 group-hover:scale-125 group-hover:text-primary transition-all duration-300 group-hover/stat:animate-pulse" />
-                Win Rate
+                Whale %
               </div>
               <div className="text-sm font-semibold group-hover:text-primary transition-colors duration-300">{trader.winRate}%</div>
             </div>
@@ -90,13 +83,10 @@ export const TraderCard = ({ trader, rank }: TraderCardProps) => {
             <div className="space-y-1 group/stat hover:scale-105 transition-transform duration-300">
               <div className="flex items-center gap-1 text-xs text-muted-foreground">
                 <DollarSign className="h-3 w-3 group-hover:scale-125 transition-all duration-300 group-hover/stat:animate-pulse" />
-                24h Vol
+                Avg Trade
               </div>
-              <div className={cn(
-                "text-sm font-semibold transition-colors duration-300",
-                trader.profitChange24h > 0 ? "text-success group-hover:text-success/80" : "text-destructive"
-              )}>
-                {trader.profitChange24h > 0 ? "+" : ""}{trader.profitChange24h.toLocaleString()}
+              <div className="text-sm font-semibold transition-colors duration-300 text-primary group-hover:text-primary/80">
+                ${trader.profitChange24h.toLocaleString()}
               </div>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, TrendingDown, Loader2, Target, DollarSign } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -53,6 +53,9 @@ export const WalletTradeHistory = ({ wallet, open, onOpenChange }: WalletTradeHi
               {wallet.slice(0, 8)}...{wallet.slice(-6)}
             </span>
           </DialogTitle>
+          <DialogDescription>
+            Detailed trade history and performance metrics for this wallet
+          </DialogDescription>
         </DialogHeader>
 
         {isLoading ? (

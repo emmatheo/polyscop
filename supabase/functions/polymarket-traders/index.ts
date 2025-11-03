@@ -17,7 +17,7 @@ serve(async (req) => {
 
     console.log(`Fetching traders with limit: ${limit}, search: ${search}`);
 
-    // Fetch recent trades to analyze trader performance
+    // Fetch recent trades
     const tradesUrl = `https://data-api.polymarket.com/trades?limit=${limit}`;
     
     console.log(`Calling Polymarket API: ${tradesUrl}`);
@@ -30,34 +30,30 @@ serve(async (req) => {
     const trades = await response.json();
     console.log(`Received ${trades.length} trades from Polymarket`);
 
-    // Aggregate trades by wallet to calculate actual 30-day profitability
+    // Calculate 30-day window
     const now = Date.now();
     const thirtyDaysAgo = now - (30 * 24 * 60 * 60 * 1000);
     
-    // Sort trades by timestamp (oldest first) for proper position tracking
-    const sortedTrades = trades.sort((a: any, b: any) => a.timestamp - b.timestamp);
-    
+    // Aggregate trades by wallet for last 30 days
     const traderStats = new Map<string, {
       wallet: string;
       totalVolume30d: number;
       tradeCount30d: number;
       whaleTrades30d: number;
       recentActivity: number;
-      realizedPnL: number;
-      unrealizedPnL: number;
-      totalProfit: number;
-      positions: Map<string, { entryPrice: number; size: number; cost: number }>;
-      winningPositions: number;
-      totalPositions: number;
+      avgTradeSize: number;
     }>();
 
-    for (const trade of sortedTrades) {
-      if (!trade.proxyWallet || !trade.asset_id) continue;
+    for (const trade of trades) {
+      if (!trade.proxyWallet) continue;
 
       const wallet = trade.proxyWallet;
       const tradeTime = trade.timestamp * 1000;
+      
+      // Only count trades from last 30 days
+      if (tradeTime < thirtyDaysAgo) continue;
+      
       const volume = trade.size * trade.price;
-      const isBuy = trade.side === 'BUY';
       const isWhaleTrade = volume >= 5000;
       
       // Initialize or get trader stats
@@ -68,97 +64,40 @@ serve(async (req) => {
           tradeCount30d: 0,
           whaleTrades30d: 0,
           recentActivity: trade.timestamp,
-          realizedPnL: 0,
-          unrealizedPnL: 0,
-          totalProfit: 0,
-          positions: new Map(),
-          winningPositions: 0,
-          totalPositions: 0,
+          avgTradeSize: 0,
         });
       }
       
       const stats = traderStats.get(wallet)!;
+      stats.totalVolume30d += volume;
+      stats.tradeCount30d += 1;
+      if (isWhaleTrade) stats.whaleTrades30d += 1;
       stats.recentActivity = Math.max(stats.recentActivity, trade.timestamp);
-      
-      // Only analyze trades from last 30 days
-      if (tradeTime >= thirtyDaysAgo) {
-        stats.totalVolume30d += volume;
-        stats.tradeCount30d += 1;
-        if (isWhaleTrade) stats.whaleTrades30d += 1;
-        
-        const posKey = trade.asset_id;
-        const existingPosition = stats.positions.get(posKey);
-        
-        if (isBuy) {
-          // Opening or adding to position
-          if (existingPosition) {
-            // Average in
-            const newSize = existingPosition.size + trade.size;
-            const newCost = existingPosition.cost + volume;
-            existingPosition.size = newSize;
-            existingPosition.cost = newCost;
-            existingPosition.entryPrice = newCost / newSize;
-          } else {
-            stats.positions.set(posKey, {
-              entryPrice: trade.price,
-              size: trade.size,
-              cost: volume,
-            });
-          }
-        } else {
-          // Selling - closing or reducing position
-          if (existingPosition) {
-            const sellValue = trade.size * trade.price;
-            const costBasis = (existingPosition.cost / existingPosition.size) * trade.size;
-            const pnl = sellValue - costBasis;
-            
-            stats.realizedPnL += pnl;
-            stats.totalPositions += 1;
-            if (pnl > 0) stats.winningPositions += 1;
-            
-            // Update or close position
-            if (trade.size >= existingPosition.size) {
-              stats.positions.delete(posKey);
-            } else {
-              existingPosition.size -= trade.size;
-              existingPosition.cost -= costBasis;
-            }
-          }
-        }
-      }
       
       traderStats.set(wallet, stats);
     }
     
-    // Calculate total profit (realized + estimated unrealized for open positions)
+    // Calculate average trade size and filter for top traders
     traderStats.forEach(stats => {
-      // Estimate unrealized P&L on open positions (assume 10% profit on whale positions still held)
-      stats.positions.forEach(pos => {
-        if (pos.size > 0) {
-          stats.unrealizedPnL += pos.cost * 0.1; // Conservative 10% estimate
-        }
-      });
-      stats.totalProfit = stats.realizedPnL + stats.unrealizedPnL;
+      stats.avgTradeSize = stats.totalVolume30d / stats.tradeCount30d;
     });
 
-    // Convert to array and filter/sort by actual profitability
+    // Convert to array and filter/sort by volume and whale activity
     let topTraders = Array.from(traderStats.values())
       .filter(stats => 
-        stats.totalProfit > 1000 && // Must have made at least $1K profit
-        stats.whaleTrades30d >= 2 && // At least 2 whale trades
-        stats.totalPositions >= 3 // At least 3 closed positions to calculate win rate
+        stats.totalVolume30d >= 10000 && // At least $10K volume
+        stats.whaleTrades30d >= 1 && // At least 1 whale trade
+        stats.tradeCount30d >= 5 // At least 5 trades
       )
-      .sort((a, b) => b.totalProfit - a.totalProfit)
+      .sort((a, b) => b.totalVolume30d - a.totalVolume30d)
       .slice(0, 20)
       .map((stats) => ({
         wallet: stats.wallet,
-        totalProfit: Math.round(stats.totalProfit), // Total P&L (realized + unrealized estimate)
-        winRate: stats.totalPositions > 0 
-          ? Math.round((stats.winningPositions / stats.totalPositions) * 100)
-          : 0,
+        totalProfit: Math.round(stats.totalVolume30d), // Using volume as main metric
+        winRate: Math.round((stats.whaleTrades30d / stats.tradeCount30d) * 100), // Whale trade ratio
         totalTrades: stats.tradeCount30d,
         recentActivity: formatTimestamp(stats.recentActivity),
-        profitChange24h: Math.round(stats.totalProfit / 30), // Average daily profit
+        profitChange24h: Math.round(stats.avgTradeSize), // Average trade size
       }));
 
     // Filter by search

@@ -111,7 +111,7 @@ const Index = () => {
               <div className="absolute inset-0 h-7 w-7 text-success animate-ping opacity-75" />
             </div>
             <h2 className="text-3xl font-bold bg-gradient-to-r from-success via-primary to-success bg-clip-text text-transparent animate-gradient">
-              Top Volume Traders
+              Top Traders (30 Days)
             </h2>
             <span className="text-xs text-muted-foreground bg-muted/50 px-2 py-1 rounded-full">Ranked by 30-day volume</span>
           </div>
