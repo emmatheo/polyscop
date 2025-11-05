@@ -1,13 +1,20 @@
 import { useState } from "react";
 import { Header } from "@/components/Header";
 import { WalletSearch } from "@/components/dashboard/WalletSearch";
+import { WatchlistToggle } from "@/components/dashboard/WatchlistToggle";
+import { OverviewCards } from "@/components/dashboard/OverviewCards";
 import { WalletStatsCards } from "@/components/dashboard/WalletStatsCards";
+import { PnLLineChart } from "@/components/dashboard/PnLLineChart";
 import { WinRatePieChart } from "@/components/dashboard/WinRatePieChart";
-import { WinRateLineChart } from "@/components/dashboard/WinRateLineChart";
-import { TopTradersTable } from "@/components/dashboard/TopTradersTable";
+import { VolumeBarChart } from "@/components/dashboard/VolumeBarChart";
+import { WhaleMovementsTable } from "@/components/dashboard/WhaleMovementsTable";
+import { WhaleFlipDetector } from "@/components/dashboard/WhaleFlipDetector";
+import { WalletComparison } from "@/components/dashboard/WalletComparison";
 import { MarketHeatmap } from "@/components/dashboard/MarketHeatmap";
-import { ActiveMarketsTable } from "@/components/dashboard/ActiveMarketsTable";
-import { WhaleActivityCard } from "@/components/WhaleActivityCard";
+import { HotMarketsTable } from "@/components/dashboard/HotMarketsTable";
+import { SentimentGauge } from "@/components/dashboard/SentimentGauge";
+import { AlphaFeed } from "@/components/dashboard/AlphaFeed";
+import { WhaleNetworkViz } from "@/components/dashboard/WhaleNetworkViz";
 import { Activity } from "lucide-react";
 import { useWhaleActivity } from "@/hooks/usePolymarketData";
 
@@ -39,16 +46,24 @@ const Dashboard = () => {
         <section className="text-center space-y-4 animate-fade-in">
           <h1 className="text-5xl font-bold text-gradient">PolyScop Dashboard</h1>
           <p className="text-xl text-muted-foreground">
-            Analyze top traders, markets, and whale performance
+            Advanced prediction market intelligence - Track traders, whales, and market momentum
           </p>
         </section>
 
-        {/* Wallet Search */}
-        <section className="animate-fade-in" style={{ animationDelay: '0.1s' }}>
-          <WalletSearch 
-            selectedWallet={selectedWallet}
-            onWalletChange={setSelectedWallet}
-          />
+        {/* Wallet Search & Watchlist */}
+        <section className="animate-fade-in flex flex-col sm:flex-row gap-4" style={{ animationDelay: '0.1s' }}>
+          <div className="flex-1">
+            <WalletSearch 
+              selectedWallet={selectedWallet}
+              onWalletChange={setSelectedWallet}
+            />
+          </div>
+          <WatchlistToggle />
+        </section>
+
+        {/* Overview Cards */}
+        <section className="animate-fade-in" style={{ animationDelay: '0.15s' }}>
+          <OverviewCards />
         </section>
 
         {/* Wallet Analytics Cards */}
@@ -58,52 +73,53 @@ const Dashboard = () => {
           </section>
         )}
 
-        {/* Performance Section */}
-        <section className="animate-fade-in space-y-6" style={{ animationDelay: '0.3s' }}>
+        {/* Performance Analytics */}
+        <section className="animate-fade-in space-y-6" style={{ animationDelay: '0.2s' }}>
           <h2 className="text-3xl font-bold text-gradient">Performance Analytics</h2>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <PnLLineChart />
             <WinRatePieChart />
-            <WinRateLineChart />
+            <VolumeBarChart />
           </div>
-
-          <TopTradersTable />
         </section>
 
-        {/* Market Insights Section */}
-        <section className="animate-fade-in space-y-6" style={{ animationDelay: '0.4s' }}>
+        {/* Whale Intelligence */}
+        <section className="animate-fade-in space-y-6" style={{ animationDelay: '0.25s' }}>
+          <h2 className="text-3xl font-bold text-gradient">Whale Intelligence</h2>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              <WhaleMovementsTable />
+            </div>
+            <WhaleFlipDetector />
+          </div>
+
+          <WalletComparison />
+        </section>
+
+        {/* Market Insights */}
+        <section className="animate-fade-in space-y-6" style={{ animationDelay: '0.3s' }}>
           <h2 className="text-3xl font-bold text-gradient">Market Insights</h2>
           
           <MarketHeatmap />
-          <ActiveMarketsTable />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <HotMarketsTable />
+            <SentimentGauge />
+          </div>
         </section>
 
-        {/* Recent Trades Feed */}
-        <section className="animate-fade-in space-y-6" style={{ animationDelay: '0.5s' }}>
-          <div className="flex items-center gap-3">
-            <Activity className="h-6 w-6 text-warning animate-pulse" />
-            <h2 className="text-3xl font-bold text-gradient">Recent Whale Trades</h2>
-            <span className="text-xs text-muted-foreground animate-pulse">Live Feed</span>
-          </div>
+        {/* Alpha Feed & Network */}
+        <section className="animate-fade-in space-y-6" style={{ animationDelay: '0.35s' }}>
+          <h2 className="text-3xl font-bold text-gradient">Alpha Intelligence</h2>
           
-          {!whaleLoading && whaleActivity && whaleActivity.length > 0 ? (
-            <div className="space-y-3">
-              {whaleActivity.slice(0, 10).map((activity, index) => (
-                <div 
-                  key={activity.id} 
-                  className="animate-fade-in"
-                  style={{ animationDelay: `${index * 0.05}s` }}
-                >
-                  <WhaleActivityCard activity={activity} />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-center text-muted-foreground py-8">
-              Loading recent whale trades...
-            </p>
-          )}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <AlphaFeed />
+            <WhaleNetworkViz />
+          </div>
         </section>
+
 
         {/* Footer */}
         <footer className="mt-12 pb-8 text-center">
