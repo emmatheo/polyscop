@@ -1,8 +1,9 @@
-import { Search, TrendingUp, Activity, Moon, Sun, DollarSign } from "lucide-react";
+import { Search, TrendingUp, Activity, Moon, Sun, DollarSign, LayoutDashboard } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
+import { Link, useLocation } from "react-router-dom";
 import {
   Select,
   SelectContent,
@@ -20,12 +21,13 @@ interface HeaderProps {
 
 export const Header = ({ searchQuery, setSearchQuery, minAmount, setMinAmount }: HeaderProps) => {
   const { theme, setTheme } = useTheme();
+  const location = useLocation();
   
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center gap-3 px-4">
         {/* Logo */}
-        <div className="flex items-center gap-3">
+        <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
           <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center">
             <TrendingUp className="h-5 w-5 text-white" />
           </div>
@@ -33,7 +35,7 @@ export const Header = ({ searchQuery, setSearchQuery, minAmount, setMinAmount }:
             <span className="text-xl font-bold text-gradient leading-none">Polyscop</span>
             <span className="text-[10px] text-muted-foreground">Whale & Trader Intelligence</span>
           </div>
-        </div>
+        </Link>
 
         {/* Search */}
         <div className="flex-1 max-w-md">
@@ -65,6 +67,18 @@ export const Header = ({ searchQuery, setSearchQuery, minAmount, setMinAmount }:
             <SelectItem value="1000000">$1M+ Whales</SelectItem>
           </SelectContent>
         </Select>
+
+        {/* Dashboard Link */}
+        <Link to="/dashboard">
+          <Button 
+            variant={location.pathname === '/dashboard' ? 'default' : 'outline'}
+            size="sm"
+            className={location.pathname === '/dashboard' ? '' : 'border-primary/30 hover:border-primary hover:bg-primary/10'}
+          >
+            <LayoutDashboard className="h-4 w-4 mr-2" />
+            Dashboard
+          </Button>
+        </Link>
 
         {/* Live Status */}
         <Badge variant="outline" className="gap-1.5 bg-success/10 border-success/30 text-success">
