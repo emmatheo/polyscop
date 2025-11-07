@@ -18,9 +18,21 @@ interface MarketStat {
   whaleCount: number;
 }
 
+interface PricePoint {
+  timestamp: number;
+  price: number;
+  outcome: string;
+}
+
+interface MarketPriceHistory {
+  market: string;
+  history: PricePoint[];
+}
+
 interface RealtimeData {
   whaleTrades: WhaleTrade[];
   marketStats: MarketStat[];
+  priceMovements: MarketPriceHistory[];
   isConnected: boolean;
 }
 
@@ -30,6 +42,7 @@ export const useRealtimePolymarket = () => {
   const [data, setData] = useState<RealtimeData>({
     whaleTrades: [],
     marketStats: [],
+    priceMovements: [],
     isConnected: false,
   });
 
@@ -60,6 +73,13 @@ export const useRealtimePolymarket = () => {
             setData(prev => ({
               ...prev,
               marketStats: message.data,
+            }));
+          }
+
+          if (message.type === 'price_movements' && message.data) {
+            setData(prev => ({
+              ...prev,
+              priceMovements: message.data,
             }));
           }
         } catch (err) {

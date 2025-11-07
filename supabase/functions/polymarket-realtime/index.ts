@@ -19,6 +19,7 @@ serve(async (req) => {
 
   let intervalId: number | null = null;
   let lastTradeTimestamp = 0;
+  const marketPriceHistory = new Map<string, Array<{ timestamp: number; price: number; outcome: string }>>();
 
   socket.onopen = () => {
     console.log("WebSocket client connected");
@@ -100,6 +101,21 @@ serve(async (req) => {
         timestamp: Date.now()
       }));
 
+      // Track price movements for top markets
+      updatePriceHistory(trades, marketPriceHistory);
+      const priceData = Array.from(marketPriceHistory.entries())
+        .slice(0, 5)
+        .map(([market, history]) => ({
+          market,
+          history: history.slice(-30), // Last 30 data points
+        }));
+
+      socket.send(JSON.stringify({
+        type: 'price_movements',
+        data: priceData,
+        timestamp: Date.now()
+      }));
+
     } catch (error) {
       console.error('Error fetching updates:', error);
     }
@@ -149,6 +165,60 @@ function formatTimestamp(timestamp: number): string {
   if (minutes < 60) return `${minutes}m ago`;
   if (hours < 24) return `${hours}h ago`;
   return `${days}d ago`;
+}
+
+function updatePriceHistory(
+  trades: any[],
+  marketPriceHistory: Map<string, Array<{ timestamp: number; price: number; outcome: string }>>
+) {
+  const now = Date.now();
+  const marketPrices = new Map<string, { price: number; outcome: string }>();
+
+  // Get latest price for each market
+  trades.forEach((trade: any) => {
+    const market = trade.title || 'Unknown';
+    if (!marketPrices.has(market)) {
+      marketPrices.set(market, {
+        price: trade.price * 100, // Convert to percentage
+        outcome: trade.outcome || trade.side
+      });
+    }
+  });
+
+  // Update history for each market
+  marketPrices.forEach((data, market) => {
+    if (!marketPriceHistory.has(market)) {
+      marketPriceHistory.set(market, []);
+    }
+    
+    const history = marketPriceHistory.get(market)!;
+    history.push({
+      timestamp: now,
+      price: data.price,
+      outcome: data.outcome
+    });
+
+    // Keep only last 50 data points per market
+    if (history.length > 50) {
+      history.shift();
+    }
+  });
+
+  // Clean up old markets (keep only top 10 by recent activity)
+  if (marketPriceHistory.size > 10) {
+    const sortedMarkets = Array.from(marketPriceHistory.entries())
+      .sort((a, b) => {
+        const lastA = a[1][a[1].length - 1]?.timestamp || 0;
+        const lastB = b[1][b[1].length - 1]?.timestamp || 0;
+        return lastB - lastA;
+      })
+      .slice(0, 10);
+    
+    marketPriceHistory.clear();
+    sortedMarkets.forEach(([market, history]) => {
+      marketPriceHistory.set(market, history);
+    });
+  }
 }
 
 function detectCategory(tags: string[], title: string): string {

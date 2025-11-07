@@ -15,6 +15,7 @@ import { HotMarketsTable } from "@/components/dashboard/HotMarketsTable";
 import { SentimentGauge } from "@/components/dashboard/SentimentGauge";
 import { AlphaFeed } from "@/components/dashboard/AlphaFeed";
 import { WhaleNetworkViz } from "@/components/dashboard/WhaleNetworkViz";
+import { LivePriceCharts } from "@/components/dashboard/LivePriceCharts";
 import { Activity } from "lucide-react";
 import { useWhaleActivity } from "@/hooks/usePolymarketData";
 
@@ -108,6 +109,12 @@ const Dashboard = () => {
             <HotMarketsTable />
             <SentimentGauge />
           </div>
+        </section>
+
+        {/* Live Price Movements */}
+        <section className="animate-fade-in space-y-6" style={{ animationDelay: '0.32s' }}>
+          <h2 className="text-3xl font-bold text-gradient">Live Market Odds</h2>
+          <LivePriceCharts />
         </section>
 
         {/* Alpha Feed & Network */}
