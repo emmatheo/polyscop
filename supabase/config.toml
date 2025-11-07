@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.polymarket-wallet-trades]
 verify_jwt = false
+
+[functions.polymarket-realtime]
+verify_jwt = false
