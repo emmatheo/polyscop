@@ -36,9 +36,14 @@ interface RealtimeData {
   isConnected: boolean;
 }
 
+interface FilterOptions {
+  categories?: string[];
+  minTradeSize?: number;
+}
+
 const WS_URL = 'wss://rckbdhmwdhblcfquedsh.supabase.co/functions/v1/polymarket-realtime';
 
-export const useRealtimePolymarket = () => {
+export const useRealtimePolymarket = (filters?: FilterOptions) => {
   const [data, setData] = useState<RealtimeData>({
     whaleTrades: [],
     marketStats: [],
@@ -47,6 +52,26 @@ export const useRealtimePolymarket = () => {
   });
 
   const [error, setError] = useState<string | null>(null);
+
+  const applyFilters = useCallback((trades: WhaleTrade[]) => {
+    if (!filters) return trades;
+
+    return trades.filter(trade => {
+      // Filter by categories
+      if (filters.categories && filters.categories.length > 0) {
+        if (!filters.categories.includes(trade.category)) {
+          return false;
+        }
+      }
+
+      // Filter by minimum trade size
+      if (filters.minTradeSize && trade.amount < filters.minTradeSize) {
+        return false;
+      }
+
+      return true;
+    });
+  }, [filters]);
 
   const connect = useCallback(() => {
     try {
@@ -63,9 +88,12 @@ export const useRealtimePolymarket = () => {
           const message = JSON.parse(event.data);
           
           if (message.type === 'update' && message.trades) {
+            const newTrades = message.trades.map((t: any) => t.data);
+            const filteredTrades = applyFilters(newTrades);
+            
             setData(prev => ({
               ...prev,
-              whaleTrades: [...message.trades.map((t: any) => t.data), ...prev.whaleTrades].slice(0, 100),
+              whaleTrades: [...filteredTrades, ...prev.whaleTrades].slice(0, 100),
             }));
           }
 
@@ -121,6 +149,16 @@ export const useRealtimePolymarket = () => {
       }
     };
   }, [connect]);
+
+  // Apply filters to existing data when filters change
+  useEffect(() => {
+    if (filters) {
+      setData(prev => ({
+        ...prev,
+        whaleTrades: applyFilters(prev.whaleTrades),
+      }));
+    }
+  }, [filters, applyFilters]);
 
   return { ...data, error };
 };

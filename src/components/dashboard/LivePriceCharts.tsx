@@ -4,8 +4,16 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { TrendingUp, Activity } from "lucide-react";
 import { useRealtimePolymarket } from "@/hooks/useRealtimePolymarket";
 
-export const LivePriceCharts = () => {
-  const { priceMovements, isConnected } = useRealtimePolymarket();
+interface LivePriceChartsProps {
+  selectedCategories?: string[];
+  minTradeSize?: number;
+}
+
+export const LivePriceCharts = ({ selectedCategories = [], minTradeSize = 5000 }: LivePriceChartsProps) => {
+  const { priceMovements, isConnected } = useRealtimePolymarket({
+    categories: selectedCategories,
+    minTradeSize,
+  });
 
   const formatTime = (timestamp: number) => {
     const date = new Date(timestamp);

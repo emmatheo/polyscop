@@ -4,8 +4,16 @@ import { Badge } from "@/components/ui/badge";
 import { TrendingUp, Loader2 } from "lucide-react";
 import { useRealtimePolymarket } from "@/hooks/useRealtimePolymarket";
 
-export const HotMarketsTable = () => {
-  const { marketStats, isConnected } = useRealtimePolymarket();
+interface HotMarketsTableProps {
+  selectedCategories?: string[];
+  minTradeSize?: number;
+}
+
+export const HotMarketsTable = ({ selectedCategories = [], minTradeSize = 5000 }: HotMarketsTableProps) => {
+  const { marketStats, isConnected } = useRealtimePolymarket({
+    categories: selectedCategories,
+    minTradeSize,
+  });
 
   if (!isConnected || marketStats.length === 0) {
     return (

@@ -15,8 +15,16 @@ const getCategoryColor = (category: string) => {
   return colors[category] || "bg-muted";
 };
 
-export const AlphaFeed = () => {
-  const { whaleTrades, isConnected } = useRealtimePolymarket();
+interface AlphaFeedProps {
+  selectedCategories?: string[];
+  minTradeSize?: number;
+}
+
+export const AlphaFeed = ({ selectedCategories = [], minTradeSize = 5000 }: AlphaFeedProps) => {
+  const { whaleTrades, isConnected } = useRealtimePolymarket({
+    categories: selectedCategories,
+    minTradeSize,
+  });
 
   return (
     <Card className="p-6 card-elevated border-primary/20">

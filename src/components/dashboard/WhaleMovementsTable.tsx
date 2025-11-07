@@ -4,8 +4,25 @@ import { Badge } from "@/components/ui/badge";
 import { ExternalLink, Loader2 } from "lucide-react";
 import { useWhaleActivity } from "@/hooks/usePolymarketData";
 
-export const WhaleMovementsTable = () => {
-  const { data: movements, isLoading } = useWhaleActivity("", "", 5000);
+interface WhaleMovementsTableProps {
+  selectedCategories?: string[];
+  minTradeSize?: number;
+}
+
+export const WhaleMovementsTable = ({ selectedCategories = [], minTradeSize = 5000 }: WhaleMovementsTableProps) => {
+  const { data: movements, isLoading } = useWhaleActivity(
+    "", 
+    selectedCategories.length === 1 ? selectedCategories[0] : "", 
+    minTradeSize
+  );
+
+  // Apply client-side filtering for multiple categories
+  const filteredMovements = movements?.filter(move => {
+    if (selectedCategories.length > 0) {
+      return selectedCategories.includes(move.category);
+    }
+    return true;
+  });
 
   if (isLoading) {
     return (
@@ -30,7 +47,7 @@ export const WhaleMovementsTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {movements?.slice(0, 10).map((move) => (
+            {filteredMovements?.slice(0, 10).map((move) => (
               <TableRow key={move.id} className="hover:bg-muted/50 transition-colors">
                 <TableCell className="font-mono text-sm">
                   <div className="flex items-center gap-2">

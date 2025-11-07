@@ -16,15 +16,21 @@ import { SentimentGauge } from "@/components/dashboard/SentimentGauge";
 import { AlphaFeed } from "@/components/dashboard/AlphaFeed";
 import { WhaleNetworkViz } from "@/components/dashboard/WhaleNetworkViz";
 import { LivePriceCharts } from "@/components/dashboard/LivePriceCharts";
+import { AdvancedFilters } from "@/components/dashboard/AdvancedFilters";
 import { Activity } from "lucide-react";
 import { useWhaleActivity } from "@/hooks/usePolymarketData";
 
 const Dashboard = () => {
   const [selectedWallet, setSelectedWallet] = useState<string>("");
   const [searchQuery] = useState("");
-  const [minAmount] = useState(5000);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [minTradeSize, setMinTradeSize] = useState(5000);
   
-  const { data: whaleActivity, isLoading: whaleLoading } = useWhaleActivity(searchQuery, "", minAmount);
+  const { data: whaleActivity, isLoading: whaleLoading } = useWhaleActivity(
+    searchQuery, 
+    selectedCategories.length === 1 ? selectedCategories[0] : "", 
+    minTradeSize
+  );
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
@@ -38,7 +44,7 @@ const Dashboard = () => {
       <Header 
         searchQuery={searchQuery} 
         setSearchQuery={() => {}}
-        minAmount={minAmount}
+        minAmount={minTradeSize}
         setMinAmount={() => {}}
       />
 
@@ -60,6 +66,16 @@ const Dashboard = () => {
             />
           </div>
           <WatchlistToggle />
+        </section>
+
+        {/* Advanced Filters */}
+        <section className="animate-fade-in" style={{ animationDelay: '0.12s' }}>
+          <AdvancedFilters
+            selectedCategories={selectedCategories}
+            onCategoriesChange={setSelectedCategories}
+            minTradeSize={minTradeSize}
+            onMinTradeSizeChange={setMinTradeSize}
+          />
         </section>
 
         {/* Overview Cards */}
@@ -91,7 +107,10 @@ const Dashboard = () => {
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
-              <WhaleMovementsTable />
+              <WhaleMovementsTable 
+                selectedCategories={selectedCategories}
+                minTradeSize={minTradeSize}
+              />
             </div>
             <WhaleFlipDetector />
           </div>
@@ -106,7 +125,10 @@ const Dashboard = () => {
           <MarketHeatmap />
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <HotMarketsTable />
+            <HotMarketsTable 
+              selectedCategories={selectedCategories}
+              minTradeSize={minTradeSize}
+            />
             <SentimentGauge />
           </div>
         </section>
@@ -114,7 +136,10 @@ const Dashboard = () => {
         {/* Live Price Movements */}
         <section className="animate-fade-in space-y-6" style={{ animationDelay: '0.32s' }}>
           <h2 className="text-3xl font-bold text-gradient">Live Market Odds</h2>
-          <LivePriceCharts />
+          <LivePriceCharts 
+            selectedCategories={selectedCategories}
+            minTradeSize={minTradeSize}
+          />
         </section>
 
         {/* Alpha Feed & Network */}
@@ -122,7 +147,10 @@ const Dashboard = () => {
           <h2 className="text-3xl font-bold text-gradient">Alpha Intelligence</h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <AlphaFeed />
+            <AlphaFeed 
+              selectedCategories={selectedCategories}
+              minTradeSize={minTradeSize}
+            />
             <WhaleNetworkViz />
           </div>
         </section>
