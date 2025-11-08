@@ -39,6 +39,8 @@ interface RealtimeData {
 interface FilterOptions {
   categories?: string[];
   minTradeSize?: number;
+  searchQuery?: string;
+  dateRange?: { from: Date | undefined; to: Date | undefined };
 }
 
 const WS_URL = 'wss://rckbdhmwdhblcfquedsh.supabase.co/functions/v1/polymarket-realtime';
@@ -67,6 +69,31 @@ export const useRealtimePolymarket = (filters?: FilterOptions) => {
       // Filter by minimum trade size
       if (filters.minTradeSize && trade.amount < filters.minTradeSize) {
         return false;
+      }
+
+      // Filter by search query
+      if (filters.searchQuery && filters.searchQuery.trim()) {
+        const query = filters.searchQuery.toLowerCase();
+        const matchesWallet = trade.wallet.toLowerCase().includes(query);
+        const matchesMarket = trade.market.toLowerCase().includes(query);
+        const matchesCategory = trade.category.toLowerCase().includes(query);
+        
+        if (!matchesWallet && !matchesMarket && !matchesCategory) {
+          return false;
+        }
+      }
+
+      // Filter by date range
+      if (filters.dateRange?.from || filters.dateRange?.to) {
+        const tradeDate = new Date(trade.timestamp);
+        
+        if (filters.dateRange.from && tradeDate < filters.dateRange.from) {
+          return false;
+        }
+        
+        if (filters.dateRange.to && tradeDate > filters.dateRange.to) {
+          return false;
+        }
       }
 
       return true;

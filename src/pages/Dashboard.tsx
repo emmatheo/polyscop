@@ -17,14 +17,21 @@ import { AlphaFeed } from "@/components/dashboard/AlphaFeed";
 import { WhaleNetworkViz } from "@/components/dashboard/WhaleNetworkViz";
 import { LivePriceCharts } from "@/components/dashboard/LivePriceCharts";
 import { AdvancedFilters } from "@/components/dashboard/AdvancedFilters";
+import { WhaleMomentum } from "@/components/dashboard/WhaleMomentum";
+import { NewsFeed } from "@/components/dashboard/NewsFeed";
+import { DailyVolumeTracking } from "@/components/dashboard/DailyVolumeTracking";
 import { Activity } from "lucide-react";
 import { useWhaleActivity } from "@/hooks/usePolymarketData";
 
 const Dashboard = () => {
   const [selectedWallet, setSelectedWallet] = useState<string>("");
-  const [searchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [minTradeSize, setMinTradeSize] = useState(5000);
+  const [dateRange, setDateRange] = useState<{ from: Date | undefined; to: Date | undefined }>({
+    from: undefined,
+    to: undefined,
+  });
   
   const { data: whaleActivity, isLoading: whaleLoading } = useWhaleActivity(
     searchQuery, 
@@ -43,9 +50,9 @@ const Dashboard = () => {
       
       <Header 
         searchQuery={searchQuery} 
-        setSearchQuery={() => {}}
+        setSearchQuery={setSearchQuery}
         minAmount={minTradeSize}
-        setMinAmount={() => {}}
+        setMinAmount={setMinTradeSize}
       />
 
       <main className="container px-4 py-8 space-y-8">
@@ -75,12 +82,26 @@ const Dashboard = () => {
             onCategoriesChange={setSelectedCategories}
             minTradeSize={minTradeSize}
             onMinTradeSizeChange={setMinTradeSize}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            dateRange={dateRange}
+            onDateRangeChange={setDateRange}
           />
         </section>
 
-        {/* Overview Cards */}
+        {/* Overview Cards - Real-time */}
         <section className="animate-fade-in" style={{ animationDelay: '0.15s' }}>
           <OverviewCards />
+        </section>
+
+        {/* Daily Volume Tracking */}
+        <section className="animate-fade-in" style={{ animationDelay: '0.17s' }}>
+          <DailyVolumeTracking 
+            selectedCategories={selectedCategories}
+            minTradeSize={minTradeSize}
+            searchQuery={searchQuery}
+            dateRange={dateRange}
+          />
         </section>
 
         {/* Wallet Analytics Cards */}
@@ -112,10 +133,18 @@ const Dashboard = () => {
                 minTradeSize={minTradeSize}
               />
             </div>
-            <WhaleFlipDetector />
+            <WhaleMomentum 
+              selectedCategories={selectedCategories}
+              minTradeSize={minTradeSize}
+              searchQuery={searchQuery}
+              dateRange={dateRange}
+            />
           </div>
 
-          <WalletComparison />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <WhaleFlipDetector />
+            <WalletComparison />
+          </div>
         </section>
 
         {/* Market Insights */}
@@ -142,17 +171,26 @@ const Dashboard = () => {
           />
         </section>
 
-        {/* Alpha Feed & Network */}
+        {/* News & Alpha Feed */}
         <section className="animate-fade-in space-y-6" style={{ animationDelay: '0.35s' }}>
-          <h2 className="text-3xl font-bold text-gradient">Alpha Intelligence</h2>
+          <h2 className="text-3xl font-bold text-gradient">News & Alpha Intelligence</h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <NewsFeed 
+              selectedCategories={selectedCategories}
+              minTradeSize={minTradeSize}
+              searchQuery={searchQuery}
+              dateRange={dateRange}
+            />
             <AlphaFeed 
               selectedCategories={selectedCategories}
               minTradeSize={minTradeSize}
+              searchQuery={searchQuery}
+              dateRange={dateRange}
             />
-            <WhaleNetworkViz />
           </div>
+
+          <WhaleNetworkViz />
         </section>
 
 

@@ -18,12 +18,21 @@ const getCategoryColor = (category: string) => {
 interface AlphaFeedProps {
   selectedCategories?: string[];
   minTradeSize?: number;
+  searchQuery?: string;
+  dateRange?: { from: Date | undefined; to: Date | undefined };
 }
 
-export const AlphaFeed = ({ selectedCategories = [], minTradeSize = 5000 }: AlphaFeedProps) => {
+export const AlphaFeed = ({ 
+  selectedCategories = [], 
+  minTradeSize = 5000,
+  searchQuery = "",
+  dateRange,
+}: AlphaFeedProps) => {
   const { whaleTrades, isConnected } = useRealtimePolymarket({
     categories: selectedCategories,
     minTradeSize,
+    searchQuery,
+    dateRange,
   });
 
   return (
