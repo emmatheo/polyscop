@@ -20,8 +20,12 @@ import { AdvancedFilters } from "@/components/dashboard/AdvancedFilters";
 import { WhaleMomentum } from "@/components/dashboard/WhaleMomentum";
 import { NewsFeed } from "@/components/dashboard/NewsFeed";
 import { DailyVolumeTracking } from "@/components/dashboard/DailyVolumeTracking";
-import { Activity } from "lucide-react";
+import { HugeWhaleAlerts } from "@/components/dashboard/HugeWhaleAlerts";
+import { DataExport } from "@/components/dashboard/DataExport";
+import { AIPredictionChat } from "@/components/AIPredictionChat";
+import { Activity, MessageSquare } from "lucide-react";
 import { useWhaleActivity } from "@/hooks/usePolymarketData";
+import { Button } from "@/components/ui/button";
 
 const Dashboard = () => {
   const [selectedWallet, setSelectedWallet] = useState<string>("");
@@ -32,6 +36,7 @@ const Dashboard = () => {
     from: undefined,
     to: undefined,
   });
+  const [showAIChat, setShowAIChat] = useState(false);
   
   const { data: whaleActivity, isLoading: whaleLoading } = useWhaleActivity(
     searchQuery, 
@@ -62,6 +67,14 @@ const Dashboard = () => {
           <p className="text-xl text-muted-foreground">
             Advanced prediction market intelligence - Track traders, whales, and market momentum
           </p>
+          <Button 
+            onClick={() => setShowAIChat(true)}
+            size="lg"
+            className="mt-4 bg-gradient-to-r from-primary to-primary-glow hover:scale-105 transition-transform"
+          >
+            <MessageSquare className="h-5 w-5 mr-2" />
+            AI Market Predictions
+          </Button>
         </section>
 
         {/* Wallet Search & Watchlist */}
@@ -89,9 +102,24 @@ const Dashboard = () => {
           />
         </section>
 
+        {/* Huge Whale Alerts */}
+        <section className="animate-fade-in" style={{ animationDelay: '0.13s' }}>
+          <HugeWhaleAlerts minTradeSize={100000} />
+        </section>
+
         {/* Overview Cards - Real-time */}
         <section className="animate-fade-in" style={{ animationDelay: '0.15s' }}>
           <OverviewCards />
+        </section>
+
+        {/* Data Export */}
+        <section className="animate-fade-in" style={{ animationDelay: '0.16s' }}>
+          <DataExport 
+            selectedCategories={selectedCategories}
+            minTradeSize={minTradeSize}
+            searchQuery={searchQuery}
+            dateRange={dateRange}
+          />
         </section>
 
         {/* Daily Volume Tracking */}
@@ -201,6 +229,9 @@ const Dashboard = () => {
           </p>
         </footer>
       </main>
+
+      {/* AI Prediction Chat */}
+      <AIPredictionChat open={showAIChat} onOpenChange={setShowAIChat} />
     </div>
   );
 };

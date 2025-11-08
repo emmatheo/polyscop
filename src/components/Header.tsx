@@ -1,4 +1,4 @@
-import { Search, TrendingUp, Activity, Moon, Sun, DollarSign, LayoutDashboard } from "lucide-react";
+import { Search, TrendingUp, Activity, Moon, Sun, DollarSign, LayoutDashboard, Waves } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -68,17 +68,38 @@ export const Header = ({ searchQuery, setSearchQuery, minAmount, setMinAmount }:
           </SelectContent>
         </Select>
 
-        {/* Dashboard Link */}
-        <Link to="/dashboard">
-          <Button 
-            variant={location.pathname === '/dashboard' ? 'default' : 'outline'}
-            size="sm"
-            className={location.pathname === '/dashboard' ? '' : 'border-primary/30 hover:border-primary hover:bg-primary/10'}
-          >
-            <LayoutDashboard className="h-4 w-4 mr-2" />
-            Dashboard
-          </Button>
-        </Link>
+        {/* Navigation Links */}
+        <div className="flex items-center gap-2">
+          <Link to="/">
+            <Button 
+              variant={location.pathname === '/' ? 'default' : 'ghost'}
+              size="sm"
+            >
+              <LayoutDashboard className="h-4 w-4 mr-2" />
+              Dashboard
+            </Button>
+          </Link>
+          
+          <Link to="/whale-tracking">
+            <Button 
+              variant={location.pathname === '/whale-tracking' ? 'default' : 'ghost'}
+              size="sm"
+            >
+              <Waves className="h-4 w-4 mr-2" />
+              Whale Tracking
+            </Button>
+          </Link>
+          
+          <Link to="/whale-activity">
+            <Button 
+              variant={location.pathname === '/whale-activity' ? 'default' : 'ghost'}
+              size="sm"
+            >
+              <Activity className="h-4 w-4 mr-2" />
+              Activity Feed
+            </Button>
+          </Link>
+        </div>
 
         {/* Live Status */}
         <Badge variant="outline" className="gap-1.5 bg-success/10 border-success/30 text-success">
