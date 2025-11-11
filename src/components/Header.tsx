@@ -1,4 +1,4 @@
-import { Search, TrendingUp, Activity, Moon, Sun, DollarSign, LayoutDashboard, Waves } from "lucide-react";
+import { Search, Activity, Moon, Sun, DollarSign, LayoutDashboard, Waves } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import polyscopLogo from "@/assets/polyscop-logo.png";
 
 interface HeaderProps {
   searchQuery: string;
@@ -27,13 +28,15 @@ export const Header = ({ searchQuery, setSearchQuery, minAmount, setMinAmount }:
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center gap-3 px-4">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center">
-            <TrendingUp className="h-5 w-5 text-white" />
-          </div>
+        <Link to="/" className="flex items-center gap-3 group transition-all duration-300">
+          <img 
+            src={polyscopLogo} 
+            alt="PolyScop Logo" 
+            className="h-10 w-auto animate-fade-in group-hover:scale-110 group-hover:drop-shadow-[0_0_15px_rgba(var(--primary-glow),0.5)] transition-all duration-300"
+          />
           <div className="flex flex-col">
-            <span className="text-xl font-bold text-gradient leading-none">Polyscop</span>
-            <span className="text-[10px] text-muted-foreground">Whale & Trader Intelligence</span>
+            <span className="text-xl font-bold text-gradient leading-none group-hover:tracking-wide transition-all duration-300">polyScop</span>
+            <span className="text-[10px] text-muted-foreground group-hover:text-primary/70 transition-colors duration-300">Whale & Trader Intelligence</span>
           </div>
         </Link>
 
