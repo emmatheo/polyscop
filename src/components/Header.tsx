@@ -28,15 +28,34 @@ export const Header = ({ searchQuery, setSearchQuery, minAmount, setMinAmount }:
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center gap-3 px-4">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-3 group transition-all duration-300">
-          <img 
-            src={polyscopLogo} 
-            alt="PolyScop Logo" 
-            className="h-10 w-auto animate-fade-in group-hover:scale-110 group-hover:drop-shadow-[0_0_15px_rgba(var(--primary-glow),0.5)] transition-all duration-300"
-          />
-          <div className="flex flex-col">
-            <span className="text-xl font-bold text-gradient leading-none group-hover:tracking-wide transition-all duration-300">polyScop</span>
-            <span className="text-[10px] text-muted-foreground group-hover:text-primary/70 transition-colors duration-300">Whale & Trader Intelligence</span>
+        <Link to="/" className="flex items-center gap-3 group relative">
+          <div className="relative animate-fade-in">
+            {/* Animated glow effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary-glow to-primary blur-xl opacity-0 group-hover:opacity-60 transition-all duration-700 animate-pulse" />
+            
+            {/* Logo with multiple animations */}
+            <img 
+              src={polyscopLogo} 
+              alt="PolyScop Logo" 
+              className="h-12 w-auto relative z-10 transition-all duration-500 ease-out
+                group-hover:scale-110 
+                group-hover:rotate-3
+                group-hover:drop-shadow-[0_0_25px_rgba(var(--primary-glow),0.8)]
+                animate-[float_6s_ease-in-out_infinite]"
+            />
+            
+            {/* Orbiting particles effect */}
+            <div className="absolute top-0 right-0 w-2 h-2 bg-primary rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-[orbit_3s_linear_infinite]" />
+            <div className="absolute bottom-0 left-0 w-1.5 h-1.5 bg-primary-glow rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-[orbit_4s_linear_infinite_reverse]" />
+          </div>
+          
+          <div className="flex flex-col relative z-10">
+            <span className="text-xl font-bold text-gradient leading-none group-hover:tracking-wide transition-all duration-300 group-hover:text-shadow-glow">
+              polyScop
+            </span>
+            <span className="text-[10px] text-muted-foreground group-hover:text-primary/80 transition-all duration-300 group-hover:translate-x-1">
+              Whale & Trader Intelligence
+            </span>
           </div>
         </Link>
 

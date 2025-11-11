@@ -68,7 +68,9 @@ export const AlphaFeed = ({
                     <Badge variant="outline" className={getCategoryColor(trade.category)}>
                       {trade.category}
                     </Badge>
-                    <span className="text-xs text-muted-foreground">{trade.timestamp}</span>
+                    <span className="text-xs text-muted-foreground font-mono">
+                      {new Date(trade.timestamp).toLocaleDateString()} {new Date(trade.timestamp).toLocaleTimeString()}
+                    </span>
                   </div>
                 </div>
               </div>

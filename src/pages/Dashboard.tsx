@@ -22,6 +22,7 @@ import { NewsFeed } from "@/components/dashboard/NewsFeed";
 import { DailyVolumeTracking } from "@/components/dashboard/DailyVolumeTracking";
 import { HugeWhaleAlerts } from "@/components/dashboard/HugeWhaleAlerts";
 import { DataExport } from "@/components/dashboard/DataExport";
+import { TradeHistoryTimeline } from "@/components/dashboard/TradeHistoryTimeline";
 import { AIPredictionChat } from "@/components/AIPredictionChat";
 import { Activity, MessageSquare } from "lucide-react";
 import { useWhaleActivity } from "@/hooks/usePolymarketData";
@@ -105,6 +106,11 @@ const Dashboard = () => {
         {/* Huge Whale Alerts */}
         <section className="animate-fade-in" style={{ animationDelay: '0.13s' }}>
           <HugeWhaleAlerts minTradeSize={100000} />
+        </section>
+
+        {/* Trade History Timeline */}
+        <section className="animate-fade-in" style={{ animationDelay: '0.14s' }}>
+          <TradeHistoryTimeline />
         </section>
 
         {/* Overview Cards - Real-time */}
