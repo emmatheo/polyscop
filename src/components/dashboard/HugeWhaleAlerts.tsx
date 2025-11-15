@@ -15,10 +15,10 @@ export const HugeWhaleAlerts = ({ minTradeSize = 100000 }: HugeWhaleAlertsProps)
   const hugeTrades = whaleTrades.filter(trade => trade.amount >= minTradeSize).slice(0, 5);
 
   return (
-    <Card className="p-6 card-elevated border-warning/30 bg-gradient-to-br from-card to-warning/5 animate-fade-in">
-      <div className="flex items-start justify-between mb-6">
+    <Card className="p-6 card-elevated border-warning/30 bg-gradient-to-br from-card to-warning/5 hover-lift">
+      <div className="flex items-start justify-between mb-6 animate-slide-up-fade">
         <div className="flex items-center gap-3">
-          <div className="p-3 rounded-lg bg-warning/20 animate-pulse">
+          <div className="p-3 rounded-lg bg-warning/20">
             <AlertTriangle className="h-6 w-6 text-warning" />
           </div>
           <div>
@@ -26,7 +26,7 @@ export const HugeWhaleAlerts = ({ minTradeSize = 100000 }: HugeWhaleAlertsProps)
             <p className="text-sm text-muted-foreground">Trades over ${(minTradeSize / 1000).toFixed(0)}K</p>
           </div>
         </div>
-        <Badge variant="default" className="bg-warning animate-pulse">
+        <Badge variant="default" className="bg-warning animate-pulse-subtle">
           Live
         </Badge>
       </div>
@@ -41,8 +41,7 @@ export const HugeWhaleAlerts = ({ minTradeSize = 100000 }: HugeWhaleAlertsProps)
           {hugeTrades.map((trade, index) => (
             <div 
               key={trade.id} 
-              className="p-4 bg-card rounded-lg border border-border hover:border-warning/50 transition-all duration-300 animate-fade-in hover:scale-[1.02]"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className={`p-4 bg-card rounded-lg border border-border hover:border-warning/50 transition-all duration-300 hover-lift animate-slide-up-fade opacity-0 stagger-${Math.min(index + 1, 6)}`}
             >
               <div className="flex items-start justify-between mb-2">
                 <div className="flex-1">
