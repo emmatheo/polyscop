@@ -19,7 +19,7 @@ export const OverviewCards = () => {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-      <div className="animate-fade-in">
+      <div className="animate-slide-up-fade opacity-0 stagger-1">
         <StatsCard
           title="Total Trades"
           value={stats.totalTrades.toLocaleString()}
@@ -29,7 +29,7 @@ export const OverviewCards = () => {
           iconColor="text-primary"
         />
       </div>
-      <div className="animate-fade-in" style={{ animationDelay: '0.05s' }}>
+      <div className="animate-slide-up-fade opacity-0 stagger-2">
         <StatsCard
           title="Win Rate"
           value={`${stats.winRate.toFixed(1)}%`}
@@ -39,7 +39,7 @@ export const OverviewCards = () => {
           iconColor="text-success"
         />
       </div>
-      <div className="animate-fade-in" style={{ animationDelay: '0.1s' }}>
+      <div className="animate-slide-up-fade opacity-0 stagger-3">
         <StatsCard
           title="Total Volume"
           value={`$${(stats.totalVolume / 1000000).toFixed(2)}M`}
@@ -49,7 +49,7 @@ export const OverviewCards = () => {
           iconColor="text-warning"
         />
       </div>
-      <div className="animate-fade-in" style={{ animationDelay: '0.15s' }}>
+      <div className="animate-slide-up-fade opacity-0 stagger-4">
         <StatsCard
           title="Active Markets"
           value={stats.activeMarkets.toLocaleString()}
@@ -59,7 +59,7 @@ export const OverviewCards = () => {
           iconColor="text-success"
         />
       </div>
-      <div className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
+      <div className="animate-slide-up-fade opacity-0 stagger-5">
         <StatsCard
           title="Avg Trade Size"
           value={`$${(stats.avgVolume / 1000).toFixed(1)}K`}

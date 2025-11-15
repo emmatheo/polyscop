@@ -33,8 +33,8 @@ export const WhaleMovementsTable = ({ selectedCategories = [], minTradeSize = 50
   }
 
   return (
-    <Card className="p-6 card-elevated border-primary/20">
-      <h3 className="text-xl font-bold mb-6 text-foreground">Top Whale Movements</h3>
+    <Card className="p-6 card-elevated border-primary/20 hover-lift">
+      <h3 className="text-xl font-bold mb-6 text-foreground animate-slide-up-fade">Top Whale Movements</h3>
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
@@ -47,8 +47,8 @@ export const WhaleMovementsTable = ({ selectedCategories = [], minTradeSize = 50
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredMovements?.slice(0, 10).map((move) => (
-              <TableRow key={move.id} className="hover:bg-muted/50 transition-colors">
+            {filteredMovements?.slice(0, 10).map((move, index) => (
+              <TableRow key={move.id} className={`hover:bg-muted/50 transition-all duration-300 animate-slide-up-fade opacity-0 stagger-${Math.min(index + 1, 6)}`}>
                 <TableCell className="font-mono text-sm">
                   <div className="flex items-center gap-2">
                     {move.wallet.slice(0, 6)}...{move.wallet.slice(-4)}

@@ -36,11 +36,11 @@ export const AlphaFeed = ({
   });
 
   return (
-    <Card className="p-6 card-elevated border-primary/20">
-      <div className="flex items-center justify-between mb-6">
+    <Card className="p-6 card-elevated border-primary/20 hover-lift">
+      <div className="flex items-center justify-between mb-6 animate-slide-up-fade">
         <h3 className="text-xl font-bold text-foreground">Alpha Feed - Live Activity</h3>
         <div className="flex items-center gap-2">
-          <div className={`h-2 w-2 rounded-full ${isConnected ? 'bg-success animate-pulse' : 'bg-muted'}`} />
+          <div className={`h-2 w-2 rounded-full ${isConnected ? 'bg-success animate-pulse-subtle' : 'bg-muted'}`} />
           <span className="text-xs text-muted-foreground">{isConnected ? 'Live' : 'Connecting...'}</span>
         </div>
       </div>
@@ -54,8 +54,7 @@ export const AlphaFeed = ({
             {whaleTrades.map((trade, i) => (
               <div
                 key={trade.id}
-                className="flex items-start gap-3 p-4 bg-muted/30 rounded-lg border border-border hover:border-primary/50 transition-all animate-fade-in"
-                style={{ animationDelay: `${i * 0.05}s` }}
+                className={`flex items-start gap-3 p-4 bg-muted/30 rounded-lg border border-border hover:border-primary/50 transition-all duration-300 hover-lift animate-slide-up-fade opacity-0 stagger-${Math.min(i + 1, 6)}`}
               >
                 <div className="p-2 rounded-lg bg-primary/20">
                   <DollarSign className="h-4 w-4 text-primary" />

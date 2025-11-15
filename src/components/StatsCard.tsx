@@ -20,7 +20,7 @@ export const StatsCard = ({
   iconColor = "text-primary",
 }: StatsCardProps) => {
   return (
-    <Card className="p-6 card-elevated">
+    <Card className="p-6 card-elevated hover-lift">
       <div className="flex items-start justify-between">
         <div className="space-y-1">
           <p className="text-sm text-muted-foreground">{title}</p>
