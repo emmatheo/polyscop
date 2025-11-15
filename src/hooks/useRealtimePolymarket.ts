@@ -7,7 +7,7 @@ interface WhaleTrade {
   side: string;
   amount: number;
   price: number;
-  timestamp: string;
+  timestamp: number;
   category: string;
 }
 

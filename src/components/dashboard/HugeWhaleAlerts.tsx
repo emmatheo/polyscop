@@ -93,10 +93,7 @@ export const HugeWhaleAlerts = ({ minTradeSize = 100000 }: HugeWhaleAlertsProps)
                 </Badge>
                 <div className="text-right">
                   <p className="text-xs text-muted-foreground font-mono">
-                    {new Date(trade.timestamp).toLocaleDateString()}
-                  </p>
-                  <p className="text-xs text-muted-foreground font-mono">
-                    {new Date(trade.timestamp).toLocaleTimeString()}
+                    {new Date(trade.timestamp).toLocaleDateString()} at {new Date(trade.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </p>
                 </div>
               </div>

@@ -69,7 +69,7 @@ export const AlphaFeed = ({
                       {trade.category}
                     </Badge>
                     <span className="text-xs text-muted-foreground font-mono">
-                      {new Date(trade.timestamp).toLocaleDateString()} {new Date(trade.timestamp).toLocaleTimeString()}
+                      {new Date(trade.timestamp).toLocaleDateString()} at {new Date(trade.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
                 </div>
