@@ -80,7 +80,7 @@ serve(async (req) => {
               side: trade.outcome || (trade.side === 'BUY' ? 'YES' : 'NO'),
               amount: Math.round(trade.size * trade.price),
               price: trade.price,
-              timestamp: formatTimestamp(trade.timestamp),
+              timestamp: trade.timestamp * 1000, // Convert to milliseconds
               category: category,
             }
           };

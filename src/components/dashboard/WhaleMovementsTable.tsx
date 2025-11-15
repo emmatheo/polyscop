@@ -63,8 +63,7 @@ export const WhaleMovementsTable = ({ selectedCategories = [], minTradeSize = 50
                   </Badge>
                 </TableCell>
                 <TableCell className="text-muted-foreground font-mono text-xs">
-                  <div>{new Date(move.timestamp).toLocaleDateString()}</div>
-                  <div>{new Date(move.timestamp).toLocaleTimeString()}</div>
+                  {new Date(move.timestamp).toLocaleDateString()} at {new Date(move.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </TableCell>
               </TableRow>
             ))}
