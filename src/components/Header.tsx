@@ -26,9 +26,9 @@ export const Header = ({ searchQuery, setSearchQuery, minAmount, setMinAmount }:
   
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center gap-3 px-4">
+      <div className="container flex flex-wrap h-auto sm:h-16 items-center gap-2 sm:gap-3 px-4 py-3 sm:py-0">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-3 group relative">
+        <Link to="/" className="flex items-center gap-2 sm:gap-3 group relative">
           <div className="relative animate-fade-in">
             {/* Animated glow effect */}
             <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary-glow to-primary blur-xl opacity-0 group-hover:opacity-60 transition-all duration-700 animate-pulse" />
@@ -37,7 +37,7 @@ export const Header = ({ searchQuery, setSearchQuery, minAmount, setMinAmount }:
             <img 
               src={polyscopLogo} 
               alt="PolyScop Logo" 
-              className="h-12 w-auto relative z-10 transition-all duration-500 ease-out
+              className="h-10 sm:h-12 w-auto relative z-10 transition-all duration-500 ease-out
                 group-hover:scale-110 
                 group-hover:rotate-3
                 group-hover:drop-shadow-[0_0_25px_rgba(var(--primary-glow),0.8)]
@@ -50,22 +50,22 @@ export const Header = ({ searchQuery, setSearchQuery, minAmount, setMinAmount }:
           </div>
           
           <div className="flex flex-col relative z-10">
-            <span className="text-xl font-bold text-gradient leading-none group-hover:tracking-wide transition-all duration-300 group-hover:text-shadow-glow">
+            <span className="text-lg sm:text-xl font-bold text-gradient leading-none group-hover:tracking-wide transition-all duration-300 group-hover:text-shadow-glow">
               polyScop
             </span>
-            <span className="text-[10px] text-muted-foreground group-hover:text-primary/80 transition-all duration-300 group-hover:translate-x-1">
+            <span className="text-[9px] sm:text-[10px] text-muted-foreground group-hover:text-primary/80 transition-all duration-300 group-hover:translate-x-1">
               Whale & Trader Intelligence
             </span>
           </div>
         </Link>
 
         {/* Search */}
-        <div className="flex-1 max-w-md">
+        <div className="flex-1 w-full sm:w-auto sm:max-w-md order-last sm:order-none mt-2 sm:mt-0">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Search markets, wallets, traders..."
-              className="pl-9 bg-muted/50"
+              placeholder="Search markets, wallets..."
+              className="pl-9 bg-muted/50 text-sm"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -74,8 +74,8 @@ export const Header = ({ searchQuery, setSearchQuery, minAmount, setMinAmount }:
 
         {/* Whale Price Range Filter */}
         <Select value={minAmount.toString()} onValueChange={(value) => setMinAmount(Number(value))}>
-          <SelectTrigger className="w-[180px] bg-muted/50">
-            <DollarSign className="h-4 w-4 mr-2 text-warning" />
+          <SelectTrigger className="w-[140px] sm:w-[180px] bg-muted/50 text-xs sm:text-sm">
+            <DollarSign className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-warning" />
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -91,7 +91,7 @@ export const Header = ({ searchQuery, setSearchQuery, minAmount, setMinAmount }:
         </Select>
 
         {/* Navigation Links */}
-        <div className="flex items-center gap-2">
+        <div className="hidden lg:flex items-center gap-2">
           <Link to="/">
             <Button 
               variant={location.pathname === '/' ? 'default' : 'ghost'}
@@ -124,7 +124,7 @@ export const Header = ({ searchQuery, setSearchQuery, minAmount, setMinAmount }:
         </div>
 
         {/* Live Status */}
-        <Badge variant="outline" className="gap-1.5 bg-success/10 border-success/30 text-success">
+        <Badge variant="outline" className="gap-1.5 bg-success/10 border-success/30 text-success text-xs">
           <Activity className="h-3 w-3 animate-pulse" />
           Live
         </Badge>
@@ -136,8 +136,8 @@ export const Header = ({ searchQuery, setSearchQuery, minAmount, setMinAmount }:
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
           className="hover:bg-muted/50 transition-all duration-300"
         >
-          <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <Sun className="h-4 w-4 sm:h-5 sm:w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute h-4 w-4 sm:h-5 sm:w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>
         </Button>
       </div>

@@ -14,7 +14,7 @@ import { MarketHeatmap } from "@/components/dashboard/MarketHeatmap";
 import { HotMarketsTable } from "@/components/dashboard/HotMarketsTable";
 import { SentimentGauge } from "@/components/dashboard/SentimentGauge";
 import { AlphaFeed } from "@/components/dashboard/AlphaFeed";
-import { WhaleNetworkViz } from "@/components/dashboard/WhaleNetworkViz";
+
 import { LivePriceCharts } from "@/components/dashboard/LivePriceCharts";
 import { AdvancedFilters } from "@/components/dashboard/AdvancedFilters";
 import { WhaleMomentum } from "@/components/dashboard/WhaleMomentum";
@@ -61,25 +61,25 @@ const Dashboard = () => {
         setMinAmount={setMinTradeSize}
       />
 
-      <main className="container px-4 py-8 space-y-8">
+      <main className="container px-4 py-6 sm:py-8 space-y-6 sm:space-y-8">
         {/* Hero Section */}
-        <section className="text-center space-y-4 animate-fade-in">
-          <h1 className="text-5xl font-bold text-gradient">PolyScop Dashboard</h1>
-          <p className="text-xl text-muted-foreground">
+        <section className="text-center space-y-3 sm:space-y-4 animate-fade-in py-4 sm:py-0">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gradient">PolyScop Dashboard</h1>
+          <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
             Advanced prediction market intelligence - Track traders, whales, and market momentum
           </p>
           <Button 
             onClick={() => setShowAIChat(true)}
             size="lg"
-            className="mt-4 bg-gradient-to-r from-primary to-primary-glow hover:scale-105 transition-transform"
+            className="mt-4 bg-gradient-to-r from-primary to-primary-glow hover:scale-105 transition-transform text-sm sm:text-base"
           >
-            <MessageSquare className="h-5 w-5 mr-2" />
+            <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
             AI Market Predictions
           </Button>
         </section>
 
         {/* Wallet Search & Watchlist */}
-        <section className="animate-fade-in flex flex-col sm:flex-row gap-4" style={{ animationDelay: '0.1s' }}>
+        <section className="animate-fade-in flex flex-col sm:flex-row gap-3 sm:gap-4" style={{ animationDelay: '0.1s' }}>
           <div className="flex-1">
             <WalletSearch 
               selectedWallet={selectedWallet}
@@ -146,10 +146,10 @@ const Dashboard = () => {
         )}
 
         {/* Performance Analytics */}
-        <section className="animate-fade-in space-y-6" style={{ animationDelay: '0.2s' }}>
-          <h2 className="text-3xl font-bold text-gradient">Performance Analytics</h2>
+        <section className="animate-fade-in space-y-4 sm:space-y-6" style={{ animationDelay: '0.2s' }}>
+          <h2 className="text-2xl sm:text-3xl font-bold text-gradient">Performance Analytics</h2>
           
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
             <PnLLineChart />
             <WinRatePieChart />
             <VolumeBarChart />
@@ -157,10 +157,10 @@ const Dashboard = () => {
         </section>
 
         {/* Whale Intelligence */}
-        <section className="animate-fade-in space-y-6" style={{ animationDelay: '0.25s' }}>
-          <h2 className="text-3xl font-bold text-gradient">Whale Intelligence</h2>
+        <section className="animate-fade-in space-y-4 sm:space-y-6" style={{ animationDelay: '0.25s' }}>
+          <h2 className="text-2xl sm:text-3xl font-bold text-gradient">Whale Intelligence</h2>
           
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
             <div className="lg:col-span-2">
               <WhaleMovementsTable 
                 selectedCategories={selectedCategories}
@@ -175,19 +175,19 @@ const Dashboard = () => {
             />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             <WhaleFlipDetector />
             <WalletComparison />
           </div>
         </section>
 
         {/* Market Insights */}
-        <section className="animate-fade-in space-y-6" style={{ animationDelay: '0.3s' }}>
-          <h2 className="text-3xl font-bold text-gradient">Market Insights</h2>
+        <section className="animate-fade-in space-y-4 sm:space-y-6" style={{ animationDelay: '0.3s' }}>
+          <h2 className="text-2xl sm:text-3xl font-bold text-gradient">Market Insights</h2>
           
           <MarketHeatmap />
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             <HotMarketsTable 
               selectedCategories={selectedCategories}
               minTradeSize={minTradeSize}
@@ -197,8 +197,8 @@ const Dashboard = () => {
         </section>
 
         {/* Live Price Movements */}
-        <section className="animate-fade-in space-y-6" style={{ animationDelay: '0.32s' }}>
-          <h2 className="text-3xl font-bold text-gradient">Live Market Odds</h2>
+        <section className="animate-fade-in space-y-4 sm:space-y-6" style={{ animationDelay: '0.32s' }}>
+          <h2 className="text-2xl sm:text-3xl font-bold text-gradient">Live Market Odds</h2>
           <LivePriceCharts 
             selectedCategories={selectedCategories}
             minTradeSize={minTradeSize}
@@ -206,10 +206,10 @@ const Dashboard = () => {
         </section>
 
         {/* News & Alpha Feed */}
-        <section className="animate-fade-in space-y-6" style={{ animationDelay: '0.35s' }}>
-          <h2 className="text-3xl font-bold text-gradient">News & Alpha Intelligence</h2>
+        <section className="animate-fade-in space-y-4 sm:space-y-6" style={{ animationDelay: '0.35s' }}>
+          <h2 className="text-2xl sm:text-3xl font-bold text-gradient">News & Alpha Intelligence</h2>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             <NewsFeed 
               selectedCategories={selectedCategories}
               minTradeSize={minTradeSize}
@@ -223,14 +223,12 @@ const Dashboard = () => {
               dateRange={dateRange}
             />
           </div>
-
-          <WhaleNetworkViz />
         </section>
 
 
         {/* Footer */}
-        <footer className="mt-12 pb-8 text-center">
-          <p className="text-sm text-muted-foreground">
+        <footer className="mt-8 sm:mt-12 pb-6 sm:pb-8 text-center">
+          <p className="text-xs sm:text-sm text-muted-foreground">
             Created by <span className="text-primary font-semibold">timmyy</span>
           </p>
         </footer>

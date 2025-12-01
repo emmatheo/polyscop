@@ -108,18 +108,18 @@ export const DataExport = ({
   };
 
   return (
-    <Card className="p-4">
-      <div className="flex items-center justify-between">
-        <div>
-          <h3 className="font-semibold text-foreground mb-1">Export Data</h3>
-          <p className="text-sm text-muted-foreground">
+    <Card className="p-4 sm:p-6 card-elevated border-primary/20 hover-lift">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex-1">
+          <h3 className="font-semibold text-foreground mb-1 text-sm sm:text-base">Export Data</h3>
+          <p className="text-xs sm:text-sm text-muted-foreground">
             Download filtered data ({whaleTrades.length} trades)
           </p>
         </div>
         
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className="gap-2">
+            <Button className="gap-2 w-full sm:w-auto">
               <Download className="h-4 w-4" />
               Export
             </Button>
