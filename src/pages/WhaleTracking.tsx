@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Header } from "@/components/Header";
 import { WhaleMovementsTable } from "@/components/dashboard/WhaleMovementsTable";
-import { WhaleNetworkViz } from "@/components/dashboard/WhaleNetworkViz";
+
 import { WhaleMomentum } from "@/components/dashboard/WhaleMomentum";
 import { WhaleFlipDetector } from "@/components/dashboard/WhaleFlipDetector";
 import { WalletComparison } from "@/components/dashboard/WalletComparison";
@@ -82,8 +82,6 @@ const WhaleTracking = () => {
             <WhaleFlipDetector />
             <WalletComparison />
           </div>
-
-          <WhaleNetworkViz />
         </section>
 
         {/* Footer */}

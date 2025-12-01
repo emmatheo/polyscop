@@ -24,35 +24,43 @@ export const HotMarketsTable = ({ selectedCategories = [], minTradeSize = 5000 }
   }
 
   return (
-    <Card className="p-6 card-elevated border-primary/20">
-      <h3 className="text-xl font-bold mb-6 text-foreground">Hot Markets - Volume Spikes</h3>
-      <div className="overflow-x-auto">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Market</TableHead>
-              <TableHead>Volume</TableHead>
-              <TableHead>Trade Count</TableHead>
-              <TableHead>Whale Count</TableHead>
-              <TableHead>Trend</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {marketStats.slice(0, 10).map((market, i) => (
-              <TableRow key={i} className="hover:bg-muted/50 transition-colors">
-                <TableCell className="font-semibold">{market.market}</TableCell>
-                <TableCell className="text-warning font-bold">${market.volume.toLocaleString()}</TableCell>
-                <TableCell className="text-foreground">{market.tradeCount} trades</TableCell>
-                <TableCell>
-                  <Badge variant="outline">{market.whaleCount} whales</Badge>
-                </TableCell>
-                <TableCell>
-                  <TrendingUp className="h-5 w-5 text-success" />
-                </TableCell>
+    <Card className="p-4 sm:p-6 card-elevated border-primary/20 hover-lift">
+      <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 text-foreground">Hot Markets - Volume Spikes</h3>
+      <div className="overflow-x-auto -mx-4 sm:mx-0">
+        <div className="inline-block min-w-full align-middle px-4 sm:px-0">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="text-xs sm:text-sm">Market</TableHead>
+                <TableHead className="text-xs sm:text-sm">Volume</TableHead>
+                <TableHead className="text-xs sm:text-sm hidden sm:table-cell">Trade Count</TableHead>
+                <TableHead className="text-xs sm:text-sm hidden md:table-cell">Whale Count</TableHead>
+                <TableHead className="text-xs sm:text-sm">Trend</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {marketStats.slice(0, 10).map((market, i) => (
+                <TableRow key={i} className="hover:bg-muted/50 transition-colors">
+                  <TableCell className="font-semibold text-xs sm:text-sm max-w-[150px] sm:max-w-none truncate">
+                    {market.market}
+                  </TableCell>
+                  <TableCell className="text-warning font-bold text-xs sm:text-sm whitespace-nowrap">
+                    ${market.volume.toLocaleString()}
+                  </TableCell>
+                  <TableCell className="text-foreground text-xs sm:text-sm hidden sm:table-cell">
+                    {market.tradeCount}
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    <Badge variant="outline" className="text-xs">{market.whaleCount}</Badge>
+                  </TableCell>
+                  <TableCell>
+                    <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-success" />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
     </Card>
   );
