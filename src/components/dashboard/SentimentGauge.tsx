@@ -11,27 +11,38 @@ const categories = [
 
 export const SentimentGauge = () => {
   return (
-    <Card className="p-4 sm:p-6 card-elevated border-primary/20 hover-lift">
-      <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 text-foreground">Market Sentiment by Category</h3>
-      <div className="space-y-4">
-        {categories.map((cat) => (
-          <div key={cat.name} className="space-y-2">
+    <Card className="p-4 sm:p-6 card-cyber hover-lift hover-glow border-animated">
+      <h3 className="text-lg sm:text-xl font-display font-bold mb-4 sm:mb-6 text-gradient flex items-center gap-2">
+        <div className="h-1 w-8 bg-gradient-to-r from-secondary to-accent" />
+        MARKET SENTIMENT
+      </h3>
+      <div className="space-y-5">
+        {categories.map((cat, idx) => (
+          <div key={cat.name} className="space-y-2 group">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-              <span className="font-semibold text-foreground text-sm sm:text-base">{cat.name}</span>
+              <span className="font-heading font-semibold text-foreground text-sm sm:text-base group-hover:text-gradient transition-all">
+                {cat.name}
+              </span>
               <div className="flex items-center gap-2 flex-wrap">
-                <Badge variant="default" className="bg-success text-xs sm:text-sm">YES {cat.yesBias}%</Badge>
-                <Badge variant="secondary" className="text-xs sm:text-sm">NO {cat.noBias}%</Badge>
+                <Badge variant="default" className="bg-success/20 text-success border-success/30 text-xs sm:text-sm font-body font-semibold">
+                  YES {cat.yesBias}%
+                </Badge>
+                <Badge variant="secondary" className="bg-destructive/20 text-destructive border-destructive/30 text-xs sm:text-sm font-body font-semibold">
+                  NO {cat.noBias}%
+                </Badge>
               </div>
             </div>
-            <div className="relative w-full h-3 bg-muted rounded-full overflow-hidden shadow-sm">
+            <div className="relative w-full h-3 rounded-full overflow-hidden glass group-hover:scale-[1.02] transition-transform">
               <div
-                className="absolute left-0 top-0 h-full bg-success transition-all duration-500 hover:brightness-110"
+                className="absolute left-0 top-0 h-full bg-gradient-to-r from-success to-success-glow transition-all duration-500 hover:brightness-110"
                 style={{ width: `${cat.yesBias}%` }}
               />
               <div
-                className="absolute right-0 top-0 h-full bg-destructive transition-all duration-500 hover:brightness-110"
+                className="absolute right-0 top-0 h-full bg-gradient-to-r from-destructive-glow to-destructive transition-all duration-500 hover:brightness-110"
                 style={{ width: `${cat.noBias}%` }}
               />
+              {/* Center divider */}
+              <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-background/50 -translate-x-1/2" />
             </div>
           </div>
         ))}

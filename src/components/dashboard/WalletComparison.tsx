@@ -10,33 +10,39 @@ const data = [
 
 export const WalletComparison = () => {
   return (
-    <Card className="p-4 sm:p-6 card-elevated border-primary/20 hover-lift">
-      <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 text-foreground">Top 3 Whale Comparison</h3>
+    <Card className="p-4 sm:p-6 card-cyber hover-lift hover-glow border-animated">
+      <h3 className="text-lg sm:text-xl font-display font-bold mb-4 sm:mb-6 text-gradient flex items-center gap-2">
+        <div className="h-1 w-8 bg-gradient-to-r from-primary to-secondary" />
+        TOP 3 WHALES
+      </h3>
       <div className="w-full overflow-x-auto">
         <div className="min-w-[400px]">
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={data}>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.2} />
               <XAxis 
                 dataKey="metric" 
                 stroke="hsl(var(--muted-foreground))"
                 fontSize={12}
                 tickLine={false}
+                className="font-body"
               />
               <YAxis 
                 stroke="hsl(var(--muted-foreground))"
                 fontSize={12}
                 tickLine={false}
+                className="font-body"
               />
               <Tooltip 
                 contentStyle={{
                   backgroundColor: "hsl(var(--card))",
                   border: "1px solid hsl(var(--border))",
                   borderRadius: "var(--radius)",
+                  backdropFilter: "blur(20px)",
                 }}
               />
               <Legend 
-                wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }}
+                wrapperStyle={{ fontSize: '12px', paddingTop: '10px', fontFamily: 'Sora' }}
               />
               <Bar dataKey="wallet1" fill="hsl(var(--primary))" name="Whale #1" radius={[8, 8, 0, 0]} />
               <Bar dataKey="wallet2" fill="hsl(var(--success))" name="Whale #2" radius={[8, 8, 0, 0]} />
