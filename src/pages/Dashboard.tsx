@@ -46,13 +46,17 @@ const Dashboard = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
-      {/* Background Watermark */}
-      <div className="fixed inset-0 flex items-center justify-center pointer-events-none opacity-[0.03] select-none">
-        <span className="text-[20rem] font-bold text-foreground rotate-[-45deg]">
-          POLYSCOP
-        </span>
+    <div className="min-h-screen bg-background relative">
+      {/* Animated Grid Background */}
+      <div className="fixed inset-0 pointer-events-none opacity-30 dark:opacity-20">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,hsl(var(--primary)/0.1),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,hsl(var(--secondary)/0.08),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,hsl(var(--accent)/0.08),transparent_50%)]" />
       </div>
+
+      {/* Floating Orbs */}
+      <div className="fixed top-20 right-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl animate-float-delayed pointer-events-none" />
+      <div className="fixed bottom-20 left-20 w-80 h-80 bg-secondary/10 rounded-full blur-3xl animate-float pointer-events-none" />
       
       <Header 
         searchQuery={searchQuery} 
@@ -61,20 +65,29 @@ const Dashboard = () => {
         setMinAmount={setMinTradeSize}
       />
 
-      <main className="container px-4 py-6 sm:py-8 space-y-6 sm:space-y-8">
+      <main className="container relative z-10 px-4 py-6 sm:py-10 space-y-8 sm:space-y-12">
         {/* Hero Section */}
-        <section className="text-center space-y-3 sm:space-y-4 animate-fade-in py-4 sm:py-0">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gradient">PolyScop Dashboard</h1>
-          <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
-            Advanced prediction market intelligence - Track traders, whales, and market momentum
+        <section className="text-center space-y-4 sm:space-y-6 animate-fade-in py-8 sm:py-12">
+          <div className="inline-block">
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-display font-black text-gradient mb-3 tracking-tight">
+              POLYSCOP
+            </h1>
+            <div className="h-1 w-full bg-gradient-to-r from-transparent via-primary to-transparent animate-glow-pulse" />
+          </div>
+          <p className="text-lg sm:text-xl lg:text-2xl text-muted-foreground max-w-3xl mx-auto px-4 font-heading font-light">
+            Next-Gen Whale Intelligence Platform
+          </p>
+          <p className="text-sm sm:text-base text-muted-foreground/80 max-w-2xl mx-auto font-body">
+            Real-time prediction market analytics • Advanced whale tracking • AI-powered insights
           </p>
           <Button 
             onClick={() => setShowAIChat(true)}
             size="lg"
-            className="mt-4 bg-gradient-to-r from-primary to-primary-glow hover:scale-105 transition-transform text-sm sm:text-base"
+            className="mt-6 group relative overflow-hidden bg-gradient-to-r from-primary to-secondary hover:scale-105 transition-all duration-300 text-sm sm:text-base font-heading font-semibold px-8 py-6 glow-cyan"
           >
-            <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-            AI Market Predictions
+            <div className="absolute inset-0 bg-gradient-to-r from-secondary to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 mr-2 relative z-10" />
+            <span className="relative z-10">AI Predictions</span>
           </Button>
         </section>
 
@@ -146,8 +159,14 @@ const Dashboard = () => {
         )}
 
         {/* Performance Analytics */}
-        <section className="animate-fade-in space-y-4 sm:space-y-6" style={{ animationDelay: '0.2s' }}>
-          <h2 className="text-2xl sm:text-3xl font-bold text-gradient">Performance Analytics</h2>
+        <section className="animate-fade-in space-y-6 sm:space-y-8" style={{ animationDelay: '0.2s' }}>
+          <div className="flex items-center gap-4">
+            <div className="h-1 flex-1 bg-gradient-to-r from-transparent via-primary/50 to-primary" />
+            <h2 className="text-2xl sm:text-4xl font-display font-bold text-gradient-gold">
+              PERFORMANCE
+            </h2>
+            <div className="h-1 flex-1 bg-gradient-to-r from-primary via-primary/50 to-transparent" />
+          </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
             <PnLLineChart />
@@ -157,8 +176,14 @@ const Dashboard = () => {
         </section>
 
         {/* Whale Intelligence */}
-        <section className="animate-fade-in space-y-4 sm:space-y-6" style={{ animationDelay: '0.25s' }}>
-          <h2 className="text-2xl sm:text-3xl font-bold text-gradient">Whale Intelligence</h2>
+        <section className="animate-fade-in space-y-6 sm:space-y-8" style={{ animationDelay: '0.25s' }}>
+          <div className="flex items-center gap-4">
+            <div className="h-1 flex-1 bg-gradient-to-r from-transparent via-secondary/50 to-secondary" />
+            <h2 className="text-2xl sm:text-4xl font-display font-bold text-gradient">
+              WHALE INTELLIGENCE
+            </h2>
+            <div className="h-1 flex-1 bg-gradient-to-r from-secondary via-secondary/50 to-transparent" />
+          </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
             <div className="lg:col-span-2">
@@ -182,8 +207,14 @@ const Dashboard = () => {
         </section>
 
         {/* Market Insights */}
-        <section className="animate-fade-in space-y-4 sm:space-y-6" style={{ animationDelay: '0.3s' }}>
-          <h2 className="text-2xl sm:text-3xl font-bold text-gradient">Market Insights</h2>
+        <section className="animate-fade-in space-y-6 sm:space-y-8" style={{ animationDelay: '0.3s' }}>
+          <div className="flex items-center gap-4">
+            <div className="h-1 flex-1 bg-gradient-to-r from-transparent via-accent/50 to-accent" />
+            <h2 className="text-2xl sm:text-4xl font-display font-bold text-gradient-gold">
+              MARKET INSIGHTS
+            </h2>
+            <div className="h-1 flex-1 bg-gradient-to-r from-accent via-accent/50 to-transparent" />
+          </div>
           
           <MarketHeatmap />
           
@@ -197,8 +228,14 @@ const Dashboard = () => {
         </section>
 
         {/* Live Price Movements */}
-        <section className="animate-fade-in space-y-4 sm:space-y-6" style={{ animationDelay: '0.32s' }}>
-          <h2 className="text-2xl sm:text-3xl font-bold text-gradient">Live Market Odds</h2>
+        <section className="animate-fade-in space-y-6 sm:space-y-8" style={{ animationDelay: '0.32s' }}>
+          <div className="flex items-center gap-4">
+            <div className="h-1 flex-1 bg-gradient-to-r from-transparent via-primary/50 to-primary" />
+            <h2 className="text-2xl sm:text-4xl font-display font-bold text-gradient">
+              LIVE MARKET ODDS
+            </h2>
+            <div className="h-1 flex-1 bg-gradient-to-r from-primary via-primary/50 to-transparent" />
+          </div>
           <LivePriceCharts 
             selectedCategories={selectedCategories}
             minTradeSize={minTradeSize}
@@ -206,8 +243,14 @@ const Dashboard = () => {
         </section>
 
         {/* News & Alpha Feed */}
-        <section className="animate-fade-in space-y-4 sm:space-y-6" style={{ animationDelay: '0.35s' }}>
-          <h2 className="text-2xl sm:text-3xl font-bold text-gradient">News & Alpha Intelligence</h2>
+        <section className="animate-fade-in space-y-6 sm:space-y-8" style={{ animationDelay: '0.35s' }}>
+          <div className="flex items-center gap-4">
+            <div className="h-1 flex-1 bg-gradient-to-r from-transparent via-secondary/50 to-secondary" />
+            <h2 className="text-2xl sm:text-4xl font-display font-bold text-gradient">
+              INTELLIGENCE FEED
+            </h2>
+            <div className="h-1 flex-1 bg-gradient-to-r from-secondary via-secondary/50 to-transparent" />
+          </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             <NewsFeed 
@@ -227,9 +270,10 @@ const Dashboard = () => {
 
 
         {/* Footer */}
-        <footer className="mt-8 sm:mt-12 pb-6 sm:pb-8 text-center">
-          <p className="text-xs sm:text-sm text-muted-foreground">
-            Created by <span className="text-primary font-semibold">timmyy</span>
+        <footer className="mt-12 sm:mt-16 pb-8 sm:pb-12 text-center border-t border-border/30 pt-8">
+          <p className="text-xs sm:text-sm text-muted-foreground font-body">
+            Built with <span className="text-primary font-semibold">precision</span> by{" "}
+            <span className="text-gradient-gold font-bold">timmyy</span>
           </p>
         </footer>
       </main>
