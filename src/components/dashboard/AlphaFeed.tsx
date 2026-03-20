@@ -6,13 +6,13 @@ import { useRealtimePolymarket } from "@/hooks/useRealtimePolymarket";
 
 const getCategoryColor = (category: string) => {
   const colors: Record<string, string> = {
-    Politics: "bg-chart-4",
-    Crypto: "bg-warning",
-    Sports: "bg-success",
-    Economy: "bg-chart-1",
-    Technology: "bg-chart-5",
+    Politics: "border-chart-4/30 text-chart-4",
+    Crypto: "border-warning/30 text-warning",
+    Sports: "border-success/30 text-success",
+    Economy: "border-chart-1/30 text-chart-1",
+    Technology: "border-chart-5/30 text-chart-5",
   };
-  return colors[category] || "bg-muted";
+  return colors[category] || "border-border text-muted-foreground";
 };
 
 interface AlphaFeedProps {
@@ -36,39 +36,41 @@ export const AlphaFeed = ({
   });
 
   return (
-    <Card className="p-6 card-elevated border-primary/20 hover-lift">
-      <div className="flex items-center justify-between mb-6 animate-slide-up-fade">
-        <h3 className="text-xl font-bold text-foreground">Alpha Feed - Live Activity</h3>
+    <Card className="data-card p-5">
+      <div className="flex items-center justify-between mb-5">
+        <h3 className="text-sm font-display font-semibold text-foreground">Alpha Feed</h3>
         <div className="flex items-center gap-2">
-          <div className={`h-2 w-2 rounded-full ${isConnected ? 'bg-success animate-pulse-subtle' : 'bg-muted'}`} />
-          <span className="text-xs text-muted-foreground">{isConnected ? 'Live' : 'Connecting...'}</span>
+          <span className={`signal-dot ${isConnected ? 'bg-success' : 'bg-muted-foreground'}`} />
+          <span className="text-[10px] text-muted-foreground font-mono">{isConnected ? 'LIVE' : 'CONNECTING'}</span>
         </div>
       </div>
-      <ScrollArea className="h-[500px] pr-4">
+      <ScrollArea className="h-[460px]">
         {whaleTrades.length === 0 ? (
           <div className="flex items-center justify-center h-full">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-2 pr-3">
             {whaleTrades.map((trade, i) => (
               <div
                 key={trade.id}
-                className={`flex items-start gap-3 p-4 bg-muted/30 rounded-lg border border-border hover:border-primary/50 transition-all duration-300 hover-lift animate-slide-up-fade opacity-0 stagger-${Math.min(i + 1, 6)}`}
+                className="flex items-start gap-3 p-3 bg-muted/30 rounded-md hover:bg-muted/50 transition-colors animate-reveal-up"
+                style={{ animationDelay: `${i * 0.06}s` }}
               >
-                <div className="p-2 rounded-lg bg-primary/20">
-                  <DollarSign className="h-4 w-4 text-primary" />
+                <div className="p-1.5 rounded-md bg-primary/10 mt-0.5">
+                  <DollarSign className="h-3.5 w-3.5 text-primary" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-foreground font-medium">
-                    Whale {trade.wallet.slice(0, 6)}...{trade.wallet.slice(-4)} bought ${trade.amount.toLocaleString()} {trade.side} on {trade.market}
+                  <p className="text-xs text-foreground font-body font-medium leading-relaxed">
+                    <span className="font-mono text-muted-foreground">{trade.wallet.slice(0, 6)}…{trade.wallet.slice(-4)}</span>
+                    {' '}bought <span className="text-primary font-mono">${trade.amount.toLocaleString()}</span> {trade.side} on {trade.market}
                   </p>
-                  <div className="flex items-center gap-2 mt-2">
-                    <Badge variant="outline" className={getCategoryColor(trade.category)}>
+                  <div className="flex items-center gap-2 mt-1.5">
+                    <Badge variant="outline" className={`text-[10px] font-body ${getCategoryColor(trade.category)}`}>
                       {trade.category}
                     </Badge>
-                    <span className="text-xs text-muted-foreground font-mono">
-                      {new Date(trade.timestamp).toLocaleDateString()} at {new Date(trade.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    <span className="text-[10px] text-muted-foreground font-mono tabular-nums">
+                      {new Date(trade.timestamp).toLocaleDateString()} {new Date(trade.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
                 </div>
