@@ -23,9 +23,9 @@ export const TradeHistoryTimeline = () => {
 
   const quickDateFilters = [
     { label: "Today", days: 0 },
-    { label: "Last 7 Days", days: 7 },
-    { label: "Last 30 Days", days: 30 },
-    { label: "Last 90 Days", days: 90 },
+    { label: "7D", days: 7 },
+    { label: "30D", days: 30 },
+    { label: "90D", days: 90 },
   ];
 
   const setQuickDate = (days: number) => {
@@ -36,50 +36,47 @@ export const TradeHistoryTimeline = () => {
   };
 
   return (
-    <Card className="p-6 card-elevated border-primary/20 animate-fade-in">
+    <Card className="data-card p-5">
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Clock className="h-5 w-5 text-primary animate-pulse" />
-            <h3 className="text-xl font-bold text-foreground">Trade History Timeline</h3>
+          <div className="flex items-center gap-2">
+            <Clock className="h-4 w-4 text-muted-foreground" />
+            <h3 className="text-sm font-display font-semibold text-foreground">Trade History</h3>
           </div>
-          <Badge variant="outline" className="gap-1.5">
+          <Badge variant="outline" className="text-[10px] font-mono tabular-nums">
             {whaleTrades.length} trades
           </Badge>
         </div>
 
-        {/* Quick Date Filters */}
-        <div className="flex flex-wrap gap-2">
+        {/* Quick Filters */}
+        <div className="flex flex-wrap gap-1.5">
           {quickDateFilters.map((filter) => (
             <Button
               key={filter.label}
               variant="outline"
               size="sm"
               onClick={() => setQuickDate(filter.days)}
-              className="hover:bg-primary/10 hover:border-primary/50 transition-all"
+              className="h-7 text-xs font-body px-3 press-scale"
             >
               {filter.label}
             </Button>
           ))}
         </div>
 
-        {/* Custom Date Range Picker */}
+        {/* Date Range */}
         <div className="flex gap-2 items-center flex-wrap">
           <Popover>
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
+                size="sm"
                 className={cn(
-                  "justify-start text-left font-normal",
+                  "h-8 text-xs font-body justify-start",
                   !dateRange.from && "text-muted-foreground"
                 )}
               >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {dateRange.from ? (
-                  format(dateRange.from, "PPP")
-                ) : (
-                  <span>Pick start date</span>
-                )}
+                <CalendarIcon className="mr-1.5 h-3.5 w-3.5" />
+                {dateRange.from ? format(dateRange.from, "MMM d, yyyy") : "Start"}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
@@ -92,23 +89,20 @@ export const TradeHistoryTimeline = () => {
             </PopoverContent>
           </Popover>
 
-          <span className="text-muted-foreground">to</span>
+          <span className="text-xs text-muted-foreground">→</span>
 
           <Popover>
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
+                size="sm"
                 className={cn(
-                  "justify-start text-left font-normal",
+                  "h-8 text-xs font-body justify-start",
                   !dateRange.to && "text-muted-foreground"
                 )}
               >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {dateRange.to ? (
-                  format(dateRange.to, "PPP")
-                ) : (
-                  <span>Pick end date</span>
-                )}
+                <CalendarIcon className="mr-1.5 h-3.5 w-3.5" />
+                {dateRange.to ? format(dateRange.to, "MMM d, yyyy") : "End"}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
@@ -122,14 +116,13 @@ export const TradeHistoryTimeline = () => {
           </Popover>
         </div>
 
-        {/* Timeline Display */}
-        <ScrollArea className="h-[600px] pr-4">
-          <div className="space-y-4 relative">
-            {/* Timeline line */}
-            <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-transparent" />
+        {/* Timeline */}
+        <ScrollArea className="h-[500px]">
+          <div className="space-y-3 relative pr-3">
+            <div className="absolute left-5 top-0 bottom-0 w-px bg-border" />
 
             {whaleTrades.length === 0 ? (
-              <p className="text-center text-muted-foreground py-12">
+              <p className="text-center text-sm text-muted-foreground py-12 font-body">
                 No trades found for the selected period
               </p>
             ) : (
@@ -137,72 +130,63 @@ export const TradeHistoryTimeline = () => {
                 const tradeDate = new Date(trade.timestamp);
                 const showDateHeader =
                   index === 0 ||
-                  new Date(whaleTrades[index - 1].timestamp).toDateString() !==
-                    tradeDate.toDateString();
+                  new Date(whaleTrades[index - 1].timestamp).toDateString() !== tradeDate.toDateString();
 
                 return (
                   <div key={trade.id} className="relative">
-                    {/* Date Header */}
                     {showDateHeader && (
-                      <div className="flex items-center gap-3 mb-4 mt-6 first:mt-0">
-                        <Badge variant="secondary" className="font-semibold">
-                          {format(tradeDate, "EEEE, MMMM do yyyy")}
+                      <div className="flex items-center gap-2 mb-3 mt-4 first:mt-0">
+                        <Badge variant="secondary" className="text-[10px] font-mono">
+                          {format(tradeDate, "MMM d, yyyy")}
                         </Badge>
                         <div className="flex-1 h-px bg-border" />
                       </div>
                     )}
 
-                    {/* Trade Item */}
-                    <div className="flex gap-4 animate-fade-in" style={{ animationDelay: `${index * 0.05}s` }}>
-                      {/* Timeline dot */}
-                      <div className="relative z-10">
+                    <div className="flex gap-3 animate-reveal-up" style={{ animationDelay: `${index * 0.04}s` }}>
+                      <div className="relative z-10 shrink-0">
                         <div className={cn(
-                          "w-12 h-12 rounded-full flex items-center justify-center shadow-lg",
-                          trade.side === "YES" 
-                            ? "bg-gradient-to-br from-success to-success/50" 
-                            : "bg-gradient-to-br from-destructive to-destructive/50"
+                          "w-10 h-10 rounded-lg flex items-center justify-center",
+                          trade.side === "YES" ? "bg-success/10" : "bg-destructive/10"
                         )}>
                           {trade.side === "YES" ? (
-                            <TrendingUp className="h-6 w-6 text-white" />
+                            <TrendingUp className="h-4 w-4 text-success" />
                           ) : (
-                            <TrendingDown className="h-6 w-6 text-white" />
+                            <TrendingDown className="h-4 w-4 text-destructive" />
                           )}
                         </div>
                       </div>
 
-                      {/* Trade Details */}
-                      <div className="flex-1 bg-muted/30 rounded-lg p-4 border border-border hover:border-primary/50 transition-all">
-                        <div className="flex items-start justify-between mb-2">
-                          <div>
-                            <p className="font-semibold text-foreground">{trade.market}</p>
-                            <p className="text-xs text-muted-foreground font-mono">
-                              {trade.wallet.slice(0, 6)}...{trade.wallet.slice(-4)}
+                      <div className="flex-1 bg-muted/30 rounded-md p-3 hover:bg-muted/50 transition-colors">
+                        <div className="flex items-start justify-between mb-1">
+                          <div className="min-w-0">
+                            <p className="text-xs font-body font-semibold text-foreground truncate">{trade.market}</p>
+                            <p className="text-[10px] text-muted-foreground font-mono">
+                              {trade.wallet.slice(0, 6)}…{trade.wallet.slice(-4)}
                             </p>
                           </div>
-                          <Badge variant={trade.side === "YES" ? "default" : "secondary"}>
+                          <Badge variant="outline" className={`text-[10px] font-mono ml-2 ${
+                            trade.side === "YES" ? "text-success border-success/30" : "text-destructive border-destructive/30"
+                          }`}>
                             {trade.side}
                           </Badge>
                         </div>
 
-                        <div className="flex items-center justify-between mt-3">
+                        <div className="flex items-center justify-between mt-2">
                           <div className="flex gap-4">
                             <div>
-                              <p className="text-xs text-muted-foreground">Amount</p>
-                              <p className="font-bold text-foreground">${trade.amount.toLocaleString()}</p>
+                              <p className="text-[10px] text-muted-foreground">Amount</p>
+                              <p className="text-xs font-mono font-medium text-foreground tabular-nums">${trade.amount.toLocaleString()}</p>
                             </div>
                             <div>
-                              <p className="text-xs text-muted-foreground">Price</p>
-                              <p className="font-semibold text-foreground">{(trade.price * 100).toFixed(1)}¢</p>
+                              <p className="text-[10px] text-muted-foreground">Price</p>
+                              <p className="text-xs font-mono font-medium text-foreground tabular-nums">{(trade.price * 100).toFixed(1)}¢</p>
                             </div>
                           </div>
-
                           <div className="text-right">
-                            <p className="text-xs text-muted-foreground font-mono">
+                            <p className="text-[10px] text-muted-foreground font-mono tabular-nums">
                               {format(tradeDate, "HH:mm:ss")}
                             </p>
-                            <Badge variant="outline" className="text-xs mt-1">
-                              {trade.category}
-                            </Badge>
                           </div>
                         </div>
                       </div>

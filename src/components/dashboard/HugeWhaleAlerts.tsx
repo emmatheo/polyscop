@@ -10,91 +10,91 @@ interface HugeWhaleAlertsProps {
 
 export const HugeWhaleAlerts = ({ minTradeSize = 100000 }: HugeWhaleAlertsProps) => {
   const { whaleTrades } = useRealtimePolymarket({ minTradeSize });
-  
-  // Filter for huge trades (>= minTradeSize)
   const hugeTrades = whaleTrades.filter(trade => trade.amount >= minTradeSize).slice(0, 5);
 
   return (
-    <Card className="p-6 card-elevated border-warning/30 bg-gradient-to-br from-card to-warning/5 hover-lift">
-      <div className="flex items-start justify-between mb-6 animate-slide-up-fade">
+    <Card className="data-card p-5 terminal-accent h-full">
+      <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
-          <div className="p-3 rounded-lg bg-warning/20">
-            <AlertTriangle className="h-6 w-6 text-warning" />
+          <div className="p-2 rounded-md bg-warning/10">
+            <AlertTriangle className="h-5 w-5 text-warning" />
           </div>
           <div>
-            <h3 className="text-xl font-bold text-foreground">Huge Whale Alerts</h3>
-            <p className="text-sm text-muted-foreground">Trades over ${(minTradeSize / 1000).toFixed(0)}K</p>
+            <h3 className="text-sm font-display font-semibold text-foreground">Whale Alerts</h3>
+            <p className="text-xs text-muted-foreground font-body">Trades over ${(minTradeSize / 1000).toFixed(0)}K</p>
           </div>
         </div>
-        <Badge variant="default" className="bg-warning animate-pulse-subtle">
-          Live
+        <Badge variant="outline" className="text-[10px] font-mono border-warning/30 text-warning">
+          <span className="signal-dot bg-warning mr-1.5" />
+          LIVE
         </Badge>
       </div>
       
       {hugeTrades.length === 0 ? (
-        <div className="text-center py-8 text-muted-foreground">
-          <p>No huge whale trades detected yet</p>
-          <p className="text-xs mt-2">Monitoring for trades over ${(minTradeSize / 1000).toFixed(0)}K</p>
+        <div className="text-center py-8 text-muted-foreground font-body text-sm">
+          <p>No whale trades detected yet</p>
+          <p className="text-xs mt-1">Monitoring for trades over ${(minTradeSize / 1000).toFixed(0)}K</p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-2">
           {hugeTrades.map((trade, index) => (
             <div 
               key={trade.id} 
-              className={`p-4 bg-card rounded-lg border border-border hover:border-warning/50 transition-all duration-300 hover-lift animate-slide-up-fade opacity-0 stagger-${Math.min(index + 1, 6)}`}
+              className="p-3 bg-muted/50 rounded-md animate-reveal-up"
+              style={{ animationDelay: `${index * 0.08}s` }}
             >
-              <div className="flex items-start justify-between mb-2">
-                <div className="flex-1">
-                  <p className="font-semibold text-foreground text-sm mb-1">{trade.market}</p>
-                  <p className="text-xs text-muted-foreground">
-                    Wallet: {trade.wallet.slice(0, 6)}...{trade.wallet.slice(-4)}
+              <div className="flex items-start justify-between mb-1.5">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-body font-medium text-foreground truncate">{trade.market}</p>
+                  <p className="text-xs text-muted-foreground font-mono">
+                    {trade.wallet.slice(0, 6)}…{trade.wallet.slice(-4)}
                   </p>
                 </div>
                 <Badge 
-                  variant={trade.side === "YES" ? "default" : "secondary"}
-                  className={trade.side === "YES" ? "bg-success" : "bg-destructive"}
+                  variant="outline"
+                  className={`text-[10px] font-mono ml-2 ${
+                    trade.side === "YES" ? "text-success border-success/30" : "text-destructive border-destructive/30"
+                  }`}
                 >
                   {trade.side}
                 </Badge>
               </div>
               
-              <div className="flex items-center justify-between mt-3">
+              <div className="flex items-center justify-between mt-2">
                 <div className="flex items-center gap-4">
                   <div>
-                    <p className="text-xs text-muted-foreground">Amount</p>
-                    <p className="text-lg font-bold text-foreground">
+                    <p className="text-[10px] text-muted-foreground font-body">Amount</p>
+                    <p className="text-sm font-mono font-medium text-foreground tabular-nums">
                       ${(trade.amount / 1000).toFixed(1)}K
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs text-muted-foreground">Price</p>
-                    <p className="text-sm font-semibold text-foreground">
+                    <p className="text-[10px] text-muted-foreground font-body">Price</p>
+                    <p className="text-sm font-mono font-medium text-foreground tabular-nums">
                       {(trade.price * 100).toFixed(1)}¢
                     </p>
                   </div>
                 </div>
                 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5">
                   {trade.side === "YES" ? (
-                    <TrendingUp className="h-5 w-5 text-success" />
+                    <TrendingUp className="h-4 w-4 text-success" />
                   ) : (
-                    <TrendingDown className="h-5 w-5 text-destructive" />
+                    <TrendingDown className="h-4 w-4 text-destructive" />
                   )}
-                  <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
-                    <ExternalLink className="h-4 w-4" />
+                  <Button size="sm" variant="ghost" className="h-7 w-7 p-0">
+                    <ExternalLink className="h-3.5 w-3.5" />
                   </Button>
                 </div>
               </div>
               
-              <div className="flex items-center justify-between mt-3 pt-3 border-t border-border/50">
-                <Badge variant="outline" className="text-xs">
+              <div className="flex items-center justify-between mt-2 pt-2 border-t border-border/50">
+                <Badge variant="outline" className="text-[10px] font-body">
                   {trade.category}
                 </Badge>
-                <div className="text-right">
-                  <p className="text-xs text-muted-foreground font-mono">
-                    {new Date(trade.timestamp).toLocaleDateString()} at {new Date(trade.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </p>
-                </div>
+                <p className="text-[10px] text-muted-foreground font-mono tabular-nums">
+                  {new Date(trade.timestamp).toLocaleDateString()} {new Date(trade.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </p>
               </div>
             </div>
           ))}

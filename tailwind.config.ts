@@ -19,10 +19,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Orbitron", "system-ui", "sans-serif"],
-        heading: ["Sora", "system-ui", "sans-serif"],
-        body: ["Rajdhani", "system-ui", "sans-serif"],
-        mono: ["JetBrains Mono", "monospace"],
+        display: ["Space Grotesk", "system-ui", "sans-serif"],
+        heading: ["Space Grotesk", "system-ui", "sans-serif"],
+        body: ["DM Sans", "system-ui", "sans-serif"],
+        mono: ["DM Mono", "monospace"],
       },
       colors: {
         border: "hsl(var(--border))",
