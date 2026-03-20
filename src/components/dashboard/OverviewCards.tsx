@@ -18,52 +18,52 @@ export const OverviewCards = () => {
   }, [whaleTrades, marketStats]);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-      <div className="animate-slide-up-fade opacity-0 stagger-1">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+      <div className="animate-reveal-up stagger-1">
         <StatsCard
           title="Total Trades"
           value={stats.totalTrades.toLocaleString()}
-          change={isConnected ? "Live Data" : "Connecting..."}
+          change={isConnected ? "Live" : "Connecting..."}
           changeType="positive"
           icon={Activity}
           iconColor="text-primary"
         />
       </div>
-      <div className="animate-slide-up-fade opacity-0 stagger-2">
+      <div className="animate-reveal-up stagger-2">
         <StatsCard
           title="Win Rate"
           value={`${stats.winRate.toFixed(1)}%`}
-          change="YES position bias"
+          change="YES bias"
           changeType="positive"
           icon={Award}
           iconColor="text-success"
         />
       </div>
-      <div className="animate-slide-up-fade opacity-0 stagger-3">
+      <div className="animate-reveal-up stagger-3">
         <StatsCard
-          title="Total Volume"
+          title="Volume"
           value={`$${(stats.totalVolume / 1000000).toFixed(2)}M`}
-          change="Whale trades tracked"
+          change="Tracked"
           changeType="positive"
           icon={DollarSign}
           iconColor="text-warning"
         />
       </div>
-      <div className="animate-slide-up-fade opacity-0 stagger-4">
+      <div className="animate-reveal-up stagger-4">
         <StatsCard
-          title="Active Markets"
+          title="Markets"
           value={stats.activeMarkets.toLocaleString()}
-          change="Real-time monitoring"
+          change="Monitored"
           changeType="positive"
           icon={TrendingUp}
           iconColor="text-success"
         />
       </div>
-      <div className="animate-slide-up-fade opacity-0 stagger-5">
+      <div className="animate-reveal-up stagger-5 col-span-2 sm:col-span-1">
         <StatsCard
-          title="Avg Trade Size"
+          title="Avg Size"
           value={`$${(stats.avgVolume / 1000).toFixed(1)}K`}
-          change="Per whale trade"
+          change="Per trade"
           changeType="positive"
           icon={Target}
           iconColor="text-primary"
