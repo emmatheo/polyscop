@@ -108,34 +108,32 @@ export const DataExport = ({
   };
 
   return (
-    <Card className="p-4 sm:p-6 card-elevated border-primary/20 hover-lift">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div className="flex-1">
-          <h3 className="font-semibold text-foreground mb-1 text-sm sm:text-base">Export Data</h3>
-          <p className="text-xs sm:text-sm text-muted-foreground">
-            Download filtered data ({whaleTrades.length} trades)
-          </p>
-        </div>
-        
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button className="gap-2 w-full sm:w-auto">
-              <Download className="h-4 w-4" />
-              Export
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={exportToCSV} className="gap-2">
-              <FileSpreadsheet className="h-4 w-4" />
-              Export as CSV
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={exportToJSON} className="gap-2">
-              <FileJson className="h-4 w-4" />
-              Export as JSON
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+    <Card className="data-card p-5 h-full flex flex-col justify-between">
+      <div>
+        <h3 className="text-sm font-display font-semibold text-foreground mb-1">Export Data</h3>
+        <p className="text-xs text-muted-foreground font-body">
+          {whaleTrades.length} trades available
+        </p>
       </div>
+      
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button className="gap-2 w-full mt-4 h-9 text-xs font-body press-scale">
+            <Download className="h-3.5 w-3.5" />
+            Export
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={exportToCSV} className="gap-2 text-xs font-body">
+            <FileSpreadsheet className="h-3.5 w-3.5" />
+            CSV
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={exportToJSON} className="gap-2 text-xs font-body">
+            <FileJson className="h-3.5 w-3.5" />
+            JSON
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </Card>
   );
 };
