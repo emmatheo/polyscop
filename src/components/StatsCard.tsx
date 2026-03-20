@@ -12,26 +12,26 @@ interface StatsCardProps {
 
 export const StatsCard = ({ title, value, change, changeType = "neutral", icon: Icon, iconColor = "text-primary" }: StatsCardProps) => {
   return (
-    <Card className="card-cyber hover-lift hover-glow border-animated group">
+    <Card className="data-card press-scale">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-xs sm:text-sm font-heading font-semibold text-muted-foreground uppercase tracking-wider">
+        <CardTitle className="text-[11px] font-body font-medium text-muted-foreground uppercase tracking-wider">
           {title}
         </CardTitle>
-        <div className={`p-2 rounded-lg bg-gradient-to-br ${
-          iconColor === 'text-primary' ? 'from-primary/20 to-primary/10' :
-          iconColor === 'text-success' ? 'from-success/20 to-success/10' :
-          iconColor === 'text-warning' ? 'from-warning/20 to-warning/10' :
-          'from-muted to-muted/50'
-        } group-hover:scale-110 transition-transform duration-300`}>
-          <Icon className={`h-4 w-4 ${iconColor}`} />
+        <div className={`p-1.5 rounded-md ${
+          iconColor === 'text-primary' ? 'bg-primary/10' :
+          iconColor === 'text-success' ? 'bg-success/10' :
+          iconColor === 'text-warning' ? 'bg-warning/10' :
+          'bg-muted'
+        }`}>
+          <Icon className={`h-3.5 w-3.5 ${iconColor}`} />
         </div>
       </CardHeader>
       <CardContent>
-        <div className="text-2xl sm:text-3xl font-display font-black text-foreground mb-1 group-hover:text-gradient transition-all">
+        <div className="text-2xl font-display font-bold text-foreground tabular-nums tracking-tight">
           {value}
         </div>
         {change && (
-          <p className={`text-xs font-body font-medium flex items-center gap-1 ${
+          <p className={`text-[11px] font-body font-medium flex items-center gap-1 mt-1 ${
             changeType === "positive" ? "text-success" : 
             changeType === "negative" ? "text-destructive" : 
             "text-muted-foreground"
